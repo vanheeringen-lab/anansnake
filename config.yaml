@@ -1,0 +1,20 @@
+# general options
+samples: samples.tsv
+result_dir: "./ananse"
+gene_counts:
+atac_counts:
+genome:
+
+# ANANSE binding
+jaccard: 0.1
+
+# ANANSE influence
+edges: 100_000
+padj: 0.05
+contrasts:
+  - "condition_c2_c1"
+  - "condition_c3_c1"
+  - "condition_c3_c2"
+
+# ANANSE plot
+plot_type: "png"

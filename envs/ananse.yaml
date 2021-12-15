@@ -1,0 +1,9 @@
+name: ananse
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+dependencies:
+  - pip
+  - pip:
+    - git+https://github.com/vanheeringen-lab/ANANSE.git@develop
