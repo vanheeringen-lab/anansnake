@@ -6,9 +6,9 @@ rule motif2factor:
     Create a gimme pfm/motif2factor with ortholog TFs for this genome
     """
     output:
-        expand("{result_dir}/gimme/{genome}.gimme.vertebrate.v5.0.pfm",** config),
+        expand("{result_dir}/gimme/{assembly}.gimme.vertebrate.v5.0.pfm",** config),
     log:
-        expand("{result_dir}/gimme/log_{genome}_m2f.txt",**config),
+        expand("{result_dir}/gimme/log_{assembly}_m2f.txt",**config),
     params:
         genome=config["genome"],
     threads: 12
@@ -41,7 +41,7 @@ rule pfmscorefile:
     output:
         expand("{result_dir}/gimme/pfmscorefile.tsv",**config),
     log:
-        expand("{result_dir}/gimme/log_{genome}_pfmscorefile.txt",**config),
+        expand("{result_dir}/gimme/log_{assembly}_pfmscorefile.txt",**config),
     params:
         genome=config["genome"],
     threads: 12
