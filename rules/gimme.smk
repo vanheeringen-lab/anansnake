@@ -3,7 +3,7 @@ from snakemake.io import expand
 
 rule motif2factor:
     """
-    gimme motif2factors
+    Create a gimme pfm/motif2factor with ortholog TFs for this genome
     """
     output:
         expand("{result_dir}/gimme/{genome}.gimme.vertebrate.v5.0.pfm",** config),
@@ -29,7 +29,9 @@ rule motif2factor:
 
 rule pfmscorefile:
     """
-    gimme scam
+    Scan motif activity
+    - in all putative enhancer regions
+    - for all (ortholog) TFs
     """
     input:
         regions=config["atac_counts"],

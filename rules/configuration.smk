@@ -7,42 +7,80 @@ import genomepy
 from snakemake.logging import logger
 
 
-# all files found?
-for item in ["samples", "gene_counts", "atac_counts"]:
-    if item not in [None, "", "None"]:
-        path = config[item]
-        if not os.path.exists(path):
-            logger.error(f"could not find '{item}' in {path}")
-            sys.exit(1)
-genomepy.Genome(config["genome"])
+# test command: snakemake --configfile config.yaml -nr -j 12
+debug=False
+if debug is True:
+    # don't check files to see if the dryrun works
+    config["rna_counts"] = ".gitignore"
+    config["atac_counts"] = ".gitignore"
+
+# check + fix file paths
+for item in ["result_dir", "rna_samples", "rna_counts", "atac_samples", "atac_counts"]:
+    path = genomepy.utils.cleanpath(config[item])
+
+    # create output dir
+    if item == "result_dir":
+        genomepy.utils.mkdir_p(path)
+
+    # all files found?
+    elif not os.path.exists(path):
+        logger.error(f"could not find '{item}' in {path}")
+        sys.exit(1)
+
+    # save absolute path
+    config[item] = path
+
+# check if the genome is found
+if debug is False:
+    genomepy.Genome(config["genome"], build_index=False)
 
 # read samples (contains column names & conditions)
-samples = pd.read_csv(config["samples"], sep='\t', dtype='str', comment='#')
+rna_samples = pd.read_csv(config["rna_samples"], sep='\t', dtype='str', comment='#')
+atac_samples = pd.read_csv(config["atac_samples"], sep='\t', dtype='str', comment='#')
 
-# error checking
-for condition in samples.condition.unique():
-    condition_samples = samples[samples["condition"] == condition]["sample"]
-
-    # at least 2 samples per condition (for DESeq2)
-    l = len(set(condition_samples))
-    if l < 2:
-        logger.error(f"condition {condition} had fewer than the minimum 2 samples")
+# check columns
+assert "sample" in rna_samples
+assert "sample" in atac_samples
+for contrast in config["contrasts"]:
+    col, target, source = contrast.split("_")
+    if col not in rna_samples:
+        logger.error(f"For contrast '{contrast}', column '{col}' wasn't found in the RNA-seq samples '{rna_samples}'")
+        sys.exit(1)
+    if col not in atac_samples:
+        logger.error(f"For contrast '{contrast}', column '{col}' wasn't found in the ATAC-seq samples '{atac_samples}'")
         sys.exit(1)
 
-    # no duplicate samples per condition
-    if any(condition_samples.duplicated()):
-        logger.error(f"duplicate samples in condition {condition}")
-        sys.exit(1)
+    # check rows
+    tgt_samples = rna_samples[rna_samples[col] == target]["sample"]
+    src_samples = rna_samples[rna_samples[col] == source]["sample"]
+    for samples in [tgt_samples, src_samples]:
+        # at least 2 samples per condition (for DESeq2)
+        l = len(set(samples))
+        if l < 2:
+            logger.error(f"In contrast {contrast}, one of the conditions has fewer than the minimum 2 RNA-seq samples")
+            sys.exit(1)
 
-# make paths absolute
-for item in ["result_dir", "gene_counts", "atac_counts"]:
-    if item not in [None, "None"]:
-        config[item] = genomepy.utils.cleanpath(config[item])
-genomepy.utils.mkdir_p(config["result_dir"])
+        # no duplicate samples
+        if any(samples.duplicated()):
+            logger.error(f"duplicate samples in contrast {contrast} in RNA-seq samples")
+            sys.exit(1)
+
+    tgt_samples = atac_samples[atac_samples[col] == target]["sample"]
+    src_samples = atac_samples[atac_samples[col] == source]["sample"]
+    for samples in [tgt_samples, src_samples]:
+        # at least 1 sample per condition
+        l = len(set(samples))
+        if l == 0:
+            logger.error(f"In contrast {contrast}, one of the conditions has no ATAC-seq samples")
+            sys.exit(1)
+
+        # no duplicate samples
+        if any(samples.duplicated()):
+            logger.error(f"duplicate samples in contrast {contrast} in ATAC-seq samples")
+            sys.exit(1)
 
 # print config
 for key in config:
     if config[key] not in ["", False, 0, "None"]:
         logger.info(f"{key: <23}: {config[key]}")
-
 sleep(1.5)

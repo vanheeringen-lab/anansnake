@@ -3,19 +3,20 @@ from snakemake.io import expand
 
 rule binding:
     """
-    ANANSE binding
+    Measure enhancer activity for one specific condition
     """
     input:
         atac=config["atac_counts"],
         pfm=rules.motif2factor.output,
         pfmscorefile=rules.pfmscorefile.output,
     output:
-        expand("{result_dir}/binding/binding.h5", **config),
+        expand("{result_dir}/binding/{{condition}}/binding.h5", **config),
     log:
-        expand("{result_dir}/binding/log.txt", **config),
+        expand("{result_dir}/binding/log_{{condition}}.txt", **config),
     benchmark:
-        expand("{result_dir}/benchmarks/binding.txt", **config)[0]
+        expand("{result_dir}/benchmarks/binding_{{condition}}.txt", **config)[0]
     params:
+        atac_samples=lambda wildcards: list(atac_samples[atac_samples["condition"] == wildcards.condition]["sample"]),
         genome=config["genome"],
         jaccard=config["jaccard"],
     threads: 1
@@ -27,6 +28,7 @@ rule binding:
         
         ananse binding \
         -A {input.atac} \
+        -c {params.atac_samples} \
         -g {params.genome} \
         -p {input.pfm} \
         --pfmscorefile {input.pfmscorefile} \
@@ -40,21 +42,20 @@ rule binding:
 # hist = config["hist_counts"],
 # regions = config["regions"],
 # reference = config["reference"],
-# samples=config["binding_samples"],
 
 # SHELL
 # -H {params.hist} \
 # -r {params.regions} \
 # -R {params.reference} \
-# -c {params.samples} \
+
 
 rule network:
     """
-    ANANSE network
+    generate a GRN for one specific condition
     """
     input:
         binding=rules.binding.output,
-        genes=config["gene_counts"],
+        genes=config["rna_counts"],
     output:
         expand("{result_dir}/network/{{condition}}.tsv",**config),
     log:
@@ -62,9 +63,11 @@ rule network:
     benchmark:
         expand("{result_dir}/benchmarks/network_{{condition}}.txt",**config)[0]
     params:
-        samples=lambda wildcards: list(samples[samples["condition"] == wildcards.condition]["sample"]),
+        rna_samples=lambda wildcards: list(rna_samples[rna_samples["condition"] == wildcards.condition]["sample"]),
         genome=config["genome"],
     threads: 1
+    resources:
+        mem_gb=24
     conda: "../envs/ananse.yaml"
     shell:
         """
@@ -74,13 +77,14 @@ rule network:
         ananse network \
         {input.binding} \
         -e {input.genes} \
-        -c {params.samples} \
+        -c {params.rna_samples} \
         -g {params.genome} \
         -o {output} \
         --full-output \
         -n {threads} \
         > {log} 2>&1
         """
+
 
 def get_contrasts(wildcards):
     networks = dict()
@@ -91,7 +95,8 @@ def get_contrasts(wildcards):
 
 rule influence:
     """
-    ANANSE influence
+    Find the most influential TFs between to conditions
+    - as defined in the config.yaml, under contrasts.
     """
     input:
         unpack(get_contrasts),

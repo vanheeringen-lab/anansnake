@@ -6,8 +6,8 @@ rule deseq2:
     run DESeq2 using seq2science
     """
     input:
-        samples = config["samples"],
-        genes = config["gene_counts"],
+        rna_samples = config["rna_samples"],
+        genes = config["rna_counts"],
     output:
         expand("{result_dir}/deseq2/{{contrast}}.diffexp.tsv",**config),
     log:
@@ -20,7 +20,7 @@ rule deseq2:
         
         deseq2science \
         -d {wildcards.contrast} \
-        -s {input.samples} \
+        -s {input.rna_samples} \
         -c {input.genes} \
         -o (dirname {output}) \
         > {log} 2>&1

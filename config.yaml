@@ -1,9 +1,24 @@
-# general options
-samples: samples.tsv
-result_dir: "./ananse"
-gene_counts:
+# input
+rna_samples: "rna_samples.tsv"
+atac_samples: "atac_samples.tsv"
+rna_counts:
 atac_counts:
 genome:
+
+# output
+result_dir: "./ananse"
+
+# what analysis to run.
+# format: column_group2_group1
+# column must be present in both samples files
+# groups must be present in this column
+# for RNA-seq, each group must have 2 or more samples (for DESeq2)
+contrasts:
+  - "condition_c2_c1"
+  - "condition_c3_c1"
+  - "condition_c3_c2"
+
+# optional settings
 
 # ANANSE binding
 jaccard: 0.1
@@ -11,10 +26,6 @@ jaccard: 0.1
 # ANANSE influence
 edges: 100_000
 padj: 0.05
-contrasts:
-  - "condition_c2_c1"
-  - "condition_c3_c1"
-  - "condition_c3_c2"
 
 # ANANSE plot
 plot_type: "png"
