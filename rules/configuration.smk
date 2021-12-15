@@ -25,6 +25,7 @@ for item in ["result_dir", "rna_samples", "rna_counts", "atac_samples", "atac_co
 
 # check if the genome is found
 g = genomepy.Genome(config["genome"], build_index=False)
+config["assembly"] = g.name
 
 # read samples (contains column names & conditions)
 rna_samples = pd.read_csv(config["rna_samples"], sep='\t', dtype='str', comment='#')
