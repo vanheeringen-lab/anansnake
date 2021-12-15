@@ -14,13 +14,15 @@ rule deseq2:
         expand("{result_dir}/deseq2/log_{{contrast}}.txt",**config),
     shell:
         """
+        outdir=$(dirname {output})
+
         # for the log
-        mkdir -p (dirname {output})
+        mkdir -p $outdir
         
         deseq2science \
         -d {wildcards.contrast} \
         -s {input.rna_samples} \
         -c {input.genes} \
-        -o (dirname {output}) \
+        -o $outdir \
         > {log} 2>&1
         """

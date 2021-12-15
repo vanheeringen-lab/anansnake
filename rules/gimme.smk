@@ -15,12 +15,14 @@ rule motif2factor:
     conda: "../envs/gimme.yaml"
     shell:
         """
+        outdir=$(dirname {output})
+
         # for the log
-        mkdir -p (dirname {output})
+        mkdir -p $outdir
 
         gimme motif2factors \
         --new-reference {params.genome} \
-        --outdir (dirname {output}) \
+        --outdir $outdir \
         --tmpdir {resources.tmpdir} \
         --threads {threads} \
         > {log} 2>&1
@@ -46,8 +48,10 @@ rule pfmscorefile:
     conda: "../envs/gimme.yaml"
     shell:
         """
+        outdir=$(dirname {output})
+
         # for the log
-        mkdir -p (dirname {output})
+        mkdir -p $outdir
 
         gimme scan \
         {input.regions} \

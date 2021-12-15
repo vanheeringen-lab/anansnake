@@ -4,6 +4,14 @@ channels:
   - conda-forge
   - defaults
 dependencies:
+  - seq2science>=0.6.0
   - pip
   - pip:
     - git+https://github.com/vanheeringen-lab/seq2science.git@mods
+  - genomepy>=0.11.0
+
+  # s2s.util dependencies
+  - filelock
+  - matplotlib
+  - pandas
+  - pysradb

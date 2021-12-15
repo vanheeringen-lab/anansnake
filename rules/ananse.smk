@@ -2,6 +2,14 @@ from snakemake.io import expand, unpack
 from seq2science.util import parse_contrast
 
 
+def get_samples(samples, contrasts, condition):
+    ret = []
+    cols = [parse_contrast(c, samples, check=False)[1] for c in contrasts]
+    for col in cols:
+        ret.extend(list(samples[samples[col] == condition]["sample"]))
+    return list(set(ret))
+
+
 rule binding:
     """
     Measure enhancer activity for one specific condition
@@ -17,15 +25,17 @@ rule binding:
     benchmark:
         expand("{result_dir}/benchmarks/binding_{{condition}}.txt", **config)[0]
     params:
-        atac_samples=lambda wildcards: list(atac_samples[atac_samples["condition"] == wildcards.condition]["sample"]),
+        atac_samples=lambda wildcards: get_samples(atac_samples, config["contrasts"], wildcards.condition),
         genome=config["genome"],
         jaccard=config["jaccard"],
     threads: 1
     conda: "../envs/ananse.yaml"
     shell:
         """
+        outdir=$(dirname {output})
+
         # for the log
-        mkdir -p (dirname {output})
+        mkdir -p $outdir
         
         ananse binding \
         -A {input.atac} \
@@ -35,7 +45,7 @@ rule binding:
         --pfmscorefile {input.pfmscorefile} \
         --jaccard-cutoff {params.jaccard} \
         -n {threads} \
-        -o (dirname {output}) \
+        -o $outdir \
         > {log} 2>&1
         """
 
@@ -64,7 +74,7 @@ rule network:
     benchmark:
         expand("{result_dir}/benchmarks/network_{{condition}}.txt",**config)[0]
     params:
-        rna_samples=lambda wildcards: list(rna_samples[rna_samples["condition"] == wildcards.condition]["sample"]),
+        rna_samples=lambda wildcards: get_samples(rna_samples, config["contrasts"], wildcards.condition),
         genome=config["genome"],
     threads: 1
     resources:
@@ -72,8 +82,10 @@ rule network:
     conda: "../envs/ananse.yaml"
     shell:
         """
+        outdir=$(dirname {output})
+
         # for the log
-        mkdir -p (dirname {output})
+        mkdir -p $outdir
 
         ananse network \
         {input.binding} \
@@ -89,8 +101,7 @@ rule network:
 
 def get_conditions(wildcards):
     networks = dict()
-    #wildcards.contrast.split("_")
-    column, target, source = parse_contrast(wildcards.contrast, rna_samples, check=True)
+    batch, column, target, source = parse_contrast(wildcards.contrast, rna_samples, check=True)
     networks["target"] = f"{config['result_dir']}/network/{target}.tsv"
     networks["source"] = f"{config['result_dir']}/network/{source}.tsv"
     return networks
@@ -118,8 +129,10 @@ rule influence:
     conda: "../envs/ananse.yaml"
     shell:
         """
+        outdir=$(dirname {output})
+
         # for the log
-        mkdir -p (dirname {output})
+        mkdir -p $outdir
 
         ananse influence \
         -s {input.source} \
@@ -154,14 +167,16 @@ rule plot:
     conda: "../envs/ananse.yaml"
     shell:
         """
+        outdir=$(dirname {output})
+
         # for the log
-        mkdir -p (dirname {output})
+        mkdir -p $outdir
 
         ananse plot \
         {input.inf} \
         -d {input.diff_inf} \
         -t {params.type} \
         --full-output \
-        -o (dirname {output}) \
+        -o $outdir \
         > {log} 2>&1
         """
