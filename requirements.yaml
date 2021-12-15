@@ -4,5 +4,6 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - snakemake-minimal
-  - pandas
+  - pip
+  - pip:
+    - git+https://github.com/vanheeringen-lab/seq2science.git@mods

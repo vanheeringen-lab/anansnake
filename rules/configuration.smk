@@ -5,14 +5,7 @@ from time import sleep
 import pandas as pd
 import genomepy
 from snakemake.logging import logger
-
-
-# test command: snakemake --configfile config.yaml -nr -j 12
-debug=False
-if debug is True:
-    # don't check files to see if the dryrun works
-    config["rna_counts"] = ".gitignore"
-    config["atac_counts"] = ".gitignore"
+from seq2science.util import parse_samples
 
 # check + fix file paths
 for item in ["result_dir", "rna_samples", "rna_counts", "atac_samples", "atac_counts"]:
@@ -31,8 +24,7 @@ for item in ["result_dir", "rna_samples", "rna_counts", "atac_samples", "atac_co
     config[item] = path
 
 # check if the genome is found
-if debug is False:
-    genomepy.Genome(config["genome"], build_index=False)
+g = genomepy.Genome(config["genome"], build_index=False)
 
 # read samples (contains column names & conditions)
 rna_samples = pd.read_csv(config["rna_samples"], sep='\t', dtype='str', comment='#')
@@ -78,6 +70,14 @@ for contrast in config["contrasts"]:
         if any(samples.duplicated()):
             logger.error(f"duplicate samples in contrast {contrast} in ATAC-seq samples")
             sys.exit(1)
+
+# mimic s2s samples files
+if "assembly" not in rna_samples:
+    rna_samples["assembly"] = g.name
+rna_samples = parse_samples(rna_samples, config)
+if "assembly" not in atac_samples:
+    atac_samples["assembly"] = g.name
+atac_samples = parse_samples(atac_samples, config)
 
 # print config
 for key in config:

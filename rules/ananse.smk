@@ -1,4 +1,5 @@
-from snakemake.io import expand
+from snakemake.io import expand, unpack
+from seq2science.util import parse_contrast
 
 
 rule binding:
@@ -86,9 +87,10 @@ rule network:
         """
 
 
-def get_contrasts(wildcards):
+def get_conditions(wildcards):
     networks = dict()
-    column, target, source = wildcards.contrast.split("_")
+    #wildcards.contrast.split("_")
+    column, target, source = parse_contrast(wildcards.contrast, rna_samples, check=True)
     networks["target"] = f"{config['result_dir']}/network/{target}.tsv"
     networks["source"] = f"{config['result_dir']}/network/{source}.tsv"
     return networks
@@ -99,7 +101,7 @@ rule influence:
     - as defined in the config.yaml, under contrasts.
     """
     input:
-        unpack(get_contrasts),
+        unpack(get_conditions),
         degenes=rules.deseq2.output,
     output:
         inf = expand("{result_dir}/influence/{{contrast}}.tsv",**config),

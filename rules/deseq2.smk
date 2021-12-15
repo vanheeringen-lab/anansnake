@@ -12,7 +12,6 @@ rule deseq2:
         expand("{result_dir}/deseq2/{{contrast}}.diffexp.tsv",**config),
     log:
         expand("{result_dir}/deseq2/log_{{contrast}}.txt",**config),
-    conda: "../envs/deseq2.yaml"
     shell:
         """
         # for the log

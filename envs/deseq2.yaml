@@ -1,7 +1,0 @@
-name: deseq2
-channels:
-  - bioconda
-  - conda-forge
-  - defaults
-dependencies:
-  - seq2science>=0.6.0
