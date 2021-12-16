@@ -1,0 +1,13 @@
+# sample names must match with those in the atac_counts table
+# 2 or more samples per condition required (for DESeq2)
+# DESeq2 contrast column and condition names must match with rne_samples.tsv
+# Unused columns, stage and hpf in this example, are ignored
+sample	stage	hpf	anansnake
+GSM3756599	256-cell	2.5	group1
+GSM3756600	256-cell	2.5	group1
+GSM3756606	High	3.3	group2
+GSM3756607	High	3.3	group2
+GSM3756608	High	3.3	group2
+GSM3756609	Oblong	3.6	
+GSM3756610	Oblong	3.6	
+GSM3756611	Oblong	3.6

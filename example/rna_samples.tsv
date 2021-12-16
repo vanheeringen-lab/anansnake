@@ -1,0 +1,31 @@
+# sample names must match with those in the rna_counts table
+# 2 or more samples per condition required (for DESeq2)
+# DESeq2 contrast column and condition names must match with atac_samples.tsv
+# Unused columns, batch, stage and mpf in this example, are ignored
+sample	assembly	technical_replicates	batch	stage	mpf	anansnake
+ERR1442631	GRCz11	128-cell-1	white	128-cell	135	group1
+ERR1442721	GRCz11	128-cell-1	white	128-cell	135	group1
+ERR1442811	GRCz11	128-cell-1	white	128-cell	135	group1
+ERR1442901	GRCz11	128-cell-1	white	128-cell	135	group1
+ERR1442632	GRCz11	128-cell-2	white	128-cell	135	group1
+ERR1442722	GRCz11	128-cell-2	white	128-cell	135	group1
+ERR1442812	GRCz11	128-cell-2	white	128-cell	135	group1
+ERR1442902	GRCz11	128-cell-2	white	128-cell	135	group1
+GSM1483739	GRCz11		levin	256-cell	160	group1
+ERR1442641	GRCz11	1k-cell-1	white	1k-cell	180	group2
+ERR1442731	GRCz11	1k-cell-1	white	1k-cell	180	group2
+ERR1442821	GRCz11	1k-cell-1	white	1k-cell	180	group2
+ERR1442911	GRCz11	1k-cell-1	white	1k-cell	180	group2
+ERR1442642	GRCz11	1k-cell-2	white	1k-cell	180	group2
+ERR1442732	GRCz11	1k-cell-2	white	1k-cell	180	group2
+ERR1442822	GRCz11	1k-cell-2	white	1k-cell	180	group2
+ERR1442912	GRCz11	1k-cell-2	white	1k-cell	180	group2
+GSM1483740	GRCz11		levin	High	200	group2
+ERR1442646	GRCz11	1-cell-1	white	1-cell	0	group0
+ERR1442736	GRCz11	1-cell-1	white	1-cell	0	group0
+ERR1442826	GRCz11	1-cell-1	white	1-cell	0	group0
+ERR1442916	GRCz11	1-cell-1	white	1-cell	0	group0
+ERR1442647	GRCz11	1-cell-2	white	1-cell	0
+ERR1442737	GRCz11	1-cell-2	white	1-cell	0
+ERR1442827	GRCz11	1-cell-2	white	1-cell	0
+ERR1442917	GRCz11	1-cell-2	white	1-cell	0

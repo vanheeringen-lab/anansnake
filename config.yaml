@@ -1,12 +1,18 @@
+# example command
+# snakemake --configfile config.yaml --use-conda -j 1 -n
+
 # input
-rna_samples: "rna_samples.tsv"
-atac_samples: "atac_samples.tsv"
-rna_counts:
-atac_counts:
-genome:
+rna_samples: example/rna_samples.tsv
+rna_tpm: example/GRCz11-TPM.tsv
+rna_counts: example/GRCz11-counts.tsv
+
+atac_samples: example/atac_samples.tsv
+atac_counts: example/GRCz11_raw.tsv
+
+genome: GRCz11  # genomepy install GRCz11 --annotation
 
 # output
-result_dir: "./ananse"
+result_dir: example/outdir
 
 # what analysis to run.
 # format: column_group2_group1
@@ -14,9 +20,8 @@ result_dir: "./ananse"
 # groups must be present in this column
 # for RNA-seq, each group must have 2 or more samples (for DESeq2)
 contrasts:
-  - "condition_c2_c1"
-  - "condition_c3_c1"
-  - "condition_c3_c2"
+  - "anansnake_group2_group1"
+  - "anansnake_group1_group2"
 
 # optional settings
 

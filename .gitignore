@@ -1,3 +1,4 @@
 .idea/
 **/.snakemake/
 **/ananse/
+example/outdir

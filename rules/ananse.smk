@@ -66,7 +66,7 @@ rule network:
     """
     input:
         binding=rules.binding.output,
-        genes=config["rna_counts"],
+        genes=config["rna_tpm"],
     output:
         expand("{result_dir}/network/{{condition}}.tsv",**config),
     log:

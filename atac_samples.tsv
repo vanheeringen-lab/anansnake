@@ -1,6 +1,0 @@
-# sample names must match with those in the atac_counts table
-# condition names must match with rna_samples.tsv
-sample	condition
-sample1	c1
-sample2	c2
-sample3	c3

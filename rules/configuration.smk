@@ -32,10 +32,13 @@ rna_samples = pd.read_csv(config["rna_samples"], sep='\t', dtype='str', comment=
 atac_samples = pd.read_csv(config["atac_samples"], sep='\t', dtype='str', comment='#')
 
 # check columns
-assert "sample" in rna_samples
-assert "sample" in atac_samples
+assert "sample" in rna_samples.columns
+assert "assembly" in rna_samples.columns, "deseq2science requires an assembly column"
+assert "sample" in atac_samples.columns
 for contrast in config["contrasts"]:
-    col, target, source = contrast.split("_")
+    col, target, source = contrast.replace("~", "").split("_")
+    if "+" in col:
+        batch, col = col.split("+")
     if col not in rna_samples:
         logger.error(f"For contrast '{contrast}', column '{col}' wasn't found in the RNA-seq samples '{rna_samples}'")
         sys.exit(1)
@@ -73,11 +76,7 @@ for contrast in config["contrasts"]:
             sys.exit(1)
 
 # mimic s2s samples files
-if "assembly" not in rna_samples:
-    rna_samples["assembly"] = g.name
 rna_samples = parse_samples(rna_samples, config)
-if "assembly" not in atac_samples:
-    atac_samples["assembly"] = g.name
 atac_samples = parse_samples(atac_samples, config)
 
 # print config
