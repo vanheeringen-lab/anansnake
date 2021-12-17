@@ -9,9 +9,9 @@ rule deseq2:
         rna_samples = config["rna_samples"],
         genes = config["rna_counts"],
     output:
-        expand("{result_dir}/deseq2/{assembly}-{{contrast}}.diffexp.tsv",**config),
+        expand("{result_dir}/deseq2/{assembly}-{{contrast}}.diffexp.tsv", assembly=ASSEMBLY, **config),
     log:
-        expand("{result_dir}/deseq2/log_{{contrast}}.txt",**config),
+        expand("{result_dir}/deseq2/log_{{contrast}}.txt", **config),
     shell:
         """
         outdir=$(dirname {output})

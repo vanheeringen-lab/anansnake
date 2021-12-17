@@ -3,13 +3,14 @@
 
 # input
 rna_samples: example/rna_samples.tsv
-rna_tpm: example/GRCz11-TPM.tsv
+rna_tpms: example/GRCz11-TPM.tsv
 rna_counts: example/GRCz11-counts.tsv
 
 atac_samples: example/atac_samples.tsv
 atac_counts: example/GRCz11_raw.tsv
 
 genome: GRCz11  # genomepy install GRCz11 --annotation
+genomes_dir: ~/genomes  # where to search for/store genomes (default: $HOME/.local/share/genomes)
 
 # output
 result_dir: example/outdir

@@ -5,12 +5,14 @@ rule motif2factor:
     """
     Create a gimme pfm/motif2factor with ortholog TFs for this genome
     """
+    input:
+        genome=GENOME,
     output:
-        expand("{result_dir}/gimme/{assembly}.gimme.vertebrate.v5.0.pfm",** config),
+        expand("{result_dir}/gimme/{assembly}.gimme.vertebrate.v5.0.pfm", assembly=ASSEMBLY, **config),
     log:
-        expand("{result_dir}/gimme/log_{assembly}_m2f.txt",**config),
+        expand("{result_dir}/gimme/log_{assembly}_m2f.txt", assembly=ASSEMBLY, **config),
     params:
-        genome=config["genome"],
+        genomes_dir=config.get("genomes_dir"),
     threads: 12
     conda: "../envs/gimme.yaml"
     shell:
@@ -21,7 +23,8 @@ rule motif2factor:
         mkdir -p $outdir
 
         gimme motif2factors \
-        --new-reference {params.genome} \
+        --new-reference {input.genome} \
+        --genomes_dir {params.genomes_dir} \
         --outdir $outdir \
         --tmpdir {resources.tmpdir} \
         --threads {threads} \
@@ -37,13 +40,12 @@ rule pfmscorefile:
     """
     input:
         regions=config["atac_counts"],
-        pfm=rules.motif2factor.output
+        pfm=rules.motif2factor.output,
+        genome=GENOME,
     output:
-        expand("{result_dir}/gimme/pfmscorefile.tsv",**config),
+        expand("{result_dir}/gimme/pfmscorefile.tsv", **config),
     log:
-        expand("{result_dir}/gimme/log_{assembly}_pfmscorefile.txt",**config),
-    params:
-        genome=config["genome"],
+        expand("{result_dir}/gimme/log_{assembly}_pfmscorefile.txt", assembly=ASSEMBLY, **config),
     threads: 12
     conda: "../envs/gimme.yaml"
     shell:
@@ -56,7 +58,7 @@ rule pfmscorefile:
         gimme scan \
         {input.regions} \
         -p {input.pfm} \
-        -g {params.genome} \
+        -g {input.genome} \
         -Tz --gc \
         -n {threads} \
         > {output} \

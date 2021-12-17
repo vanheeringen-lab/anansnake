@@ -1,13 +1,4 @@
-from snakemake.io import expand, unpack
-from seq2science.util import parse_contrast
-
-
-def get_samples(samples, contrasts, condition):
-    ret = []
-    cols = [parse_contrast(c, samples, check=False)[1] for c in contrasts]
-    for col in cols:
-        ret.extend(list(samples[samples[col] == condition]["sample"]))
-    return list(set(ret))
+from snakemake.io import expand
 
 
 rule binding:
@@ -18,6 +9,7 @@ rule binding:
         atac=config["atac_counts"],
         pfm=rules.motif2factor.output,
         pfmscorefile=rules.pfmscorefile.output,
+        genome=GENOME,
     output:
         expand("{result_dir}/binding/{{condition}}/binding.h5", **config),
     log:
@@ -25,8 +17,7 @@ rule binding:
     benchmark:
         expand("{result_dir}/benchmarks/binding_{{condition}}.txt", **config)[0]
     params:
-        atac_samples=lambda wildcards: get_samples(atac_samples, config["contrasts"], wildcards.condition),
-        genome=config["genome"],
+        atac_samples=lambda wildcards: CONDITIONS[wildcards.condition]["ATAC-seq samples"],
         jaccard=config["jaccard"],
     threads: 1
     conda: "../envs/ananse.yaml"
@@ -40,7 +31,7 @@ rule binding:
         ananse binding \
         -A {input.atac} \
         -c {params.atac_samples} \
-        -g {params.genome} \
+        -g {input.genome} \
         -p {input.pfm} \
         --pfmscorefile {input.pfmscorefile} \
         --jaccard-cutoff {params.jaccard} \
@@ -66,7 +57,8 @@ rule network:
     """
     input:
         binding=rules.binding.output,
-        genes=config["rna_tpm"],
+        genes=config["rna_tpms"],
+        genome=GENOME,
     output:
         expand("{result_dir}/network/{{condition}}.tsv",**config),
     log:
@@ -74,8 +66,7 @@ rule network:
     benchmark:
         expand("{result_dir}/benchmarks/network_{{condition}}.txt",**config)[0]
     params:
-        rna_samples=lambda wildcards: get_samples(rna_samples, config["contrasts"], wildcards.condition),
-        genome=config["genome"],
+        rna_samples=lambda wildcards: CONDITIONS[wildcards.condition]["RNA-seq samples"],
     threads: 1
     resources:
         mem_gb=24
@@ -91,7 +82,7 @@ rule network:
         {input.binding} \
         -e {input.genes} \
         -c {params.rna_samples} \
-        -g {params.genome} \
+        -g {input.genome} \
         -o {output} \
         --full-output \
         -n {threads} \
@@ -99,12 +90,11 @@ rule network:
         """
 
 
-def get_conditions(wildcards):
-    networks = dict()
-    batch, column, target, source = parse_contrast(wildcards.contrast, rna_samples, check=True)
-    networks["target"] = f"{config['result_dir']}/network/{target}.tsv"
-    networks["source"] = f"{config['result_dir']}/network/{source}.tsv"
-    return networks
+def get_source(wildcards):
+    return f"{config['result_dir']}/network/{CONTRASTS[wildcards.contrast]['source']}.tsv"
+
+def get_target(wildcards):
+    return f"{config['result_dir']}/network/{CONTRASTS[wildcards.contrast]['target']}.tsv"
 
 rule influence:
     """
@@ -112,8 +102,10 @@ rule influence:
     - as defined in the config.yaml, under contrasts.
     """
     input:
-        unpack(get_conditions),
+        source=get_source,
+        target=get_target,
         degenes=rules.deseq2.output,
+        genome=GENOME,
     output:
         inf = expand("{result_dir}/influence/{{contrast}}.tsv",**config),
         diff_inf = expand("{result_dir}/influence/{{contrast}}_diffnetwork.tsv",** config),
@@ -122,7 +114,6 @@ rule influence:
     benchmark:
         expand("{result_dir}/benchmarks/influence_{{contrast}}.txt",**config)[0]
     params:
-        genome=config["genome"],
         edges=config["edges"],
         padj=config["padj"],
     threads: 1
@@ -138,7 +129,7 @@ rule influence:
         -s {input.source} \
         -t {input.target} \
         -d {input.degenes} \
-        -a {params.genome} \
+        -a {input.genome} \
         -i {params.edges} \
         -j {params.padj} \
         --full-output \
