@@ -7,7 +7,7 @@ rule binding:
     """
     input:
         atac=config["atac_counts"],
-        pfm=rules.motif2factor.output,
+        pfm=rules.motif2factors.output,
         pfmscorefile=rules.pfmscorefile.output,
         genome=GENOME,
     output:
@@ -19,7 +19,7 @@ rule binding:
     params:
         atac_samples=lambda wildcards: CONDITIONS[wildcards.condition]["ATAC-seq samples"],
         jaccard=config["jaccard"],
-    threads: 1
+    threads: 1  # multithreading not required when using a pfmscorefile
     conda: "../envs/ananse.yaml"
     shell:
         """
@@ -70,9 +70,10 @@ rule network:
         expand("{result_dir}/benchmarks/network_{{condition}}.txt",**config)[0]
     params:
         rna_samples=lambda wildcards: CONDITIONS[wildcards.condition]["RNA-seq samples"],
-    threads: 1
+    threads: 1  # multithreading explodes memory
     resources:
-        mem_gb=24
+        network=1,
+        mem_mb=24_000,
     conda: "../envs/ananse.yaml"
     shell:
         """
@@ -122,7 +123,7 @@ rule influence:
     params:
         edges=config["edges"],
         padj=config["padj"],
-    threads: 1
+    threads: 12
     conda: "../envs/ananse.yaml"
     shell:
         """

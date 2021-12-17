@@ -118,3 +118,8 @@ for key in config:
     if config[key] not in ["", False, 0, "None"]:
         logger.info(f"{key: <23}: {config[key]}")
 sleep(1.5)
+
+# set default resource limits
+for res in ["deseq2", "network"]:
+    if res not in workflow.global_resources:
+        workflow.global_resources[res] = 1

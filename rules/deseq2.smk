@@ -12,6 +12,8 @@ rule deseq2:
         expand("{result_dir}/deseq2/{assembly}-{{contrast}}.diffexp.tsv", assembly=ASSEMBLY, **config),
     log:
         expand("{result_dir}/deseq2/log_{{contrast}}.txt", **config),
+    resources:
+        deseq2=1
     shell:
         """
         outdir=$(dirname {output})

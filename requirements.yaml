@@ -22,7 +22,7 @@ dependencies:
   # seq2science dev
   - pip
   - pip:
-    - git+https://github.com/vanheeringen-lab/seq2science.git@mods
+    - git+https://github.com/vanheeringen-lab/seq2science.git@develop
 
   # eventually, this should be the only requirement:
-  # - seq2science>0.6.0
+  # - seq2science>0.6.1

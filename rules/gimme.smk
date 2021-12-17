@@ -1,9 +1,10 @@
 from snakemake.io import expand
 
 
-rule motif2factor:
+rule motif2factors:
     """
-    Create a gimme pfm/motif2factor with ortholog TFs for this genome
+    Create a gimme pfm/motif2factor file.
+    For non-human/mouse, get ortholog TFs.
     """
     input:
         genome=GENOME,
@@ -13,23 +14,26 @@ rule motif2factor:
         expand("{result_dir}/gimme/log_{assembly}_m2f.txt", assembly=ASSEMBLY, **config),
     params:
         genomes_dir=config.get("genomes_dir"),
-    threads: 12
+    threads: 24
     conda: "../envs/gimme.yaml"
-    shell:
-        """
-        outdir=$(dirname {output})
-
-        # for the log
-        mkdir -p $outdir
-
-        gimme motif2factors \
-        --new-reference {input.genome} \
-        --genomes_dir {params.genomes_dir} \
-        --outdir $outdir \
-        --tmpdir {resources.tmpdir} \
-        --threads {threads} \
-        > {log} 2>&1
-        """
+    script:
+        "../scripts/motif2factors.py"
+# shell cmd always creates a m2f, even for supported genomes
+#     shell:
+#         """
+#         outdir=$(dirname {output})
+#
+#         # for the log
+#         mkdir -p $outdir
+#
+#         gimme motif2factors \
+#         --new-reference {input.genome} \
+#         --genomes_dir {params.genomes_dir} \
+#         --outdir $outdir \
+#         --tmpdir {resources.tmpdir} \
+#         --threads {threads} \
+#         > {log} 2>&1
+#         """
 
 
 rule pfmscorefile:
@@ -40,13 +44,13 @@ rule pfmscorefile:
     """
     input:
         regions=config["atac_counts"],
-        pfm=rules.motif2factor.output,
+        pfm=rules.motif2factors.output,
         genome=GENOME,
     output:
         expand("{result_dir}/gimme/pfmscorefile.tsv", **config),
     log:
         expand("{result_dir}/gimme/log_{assembly}_pfmscorefile.txt", assembly=ASSEMBLY, **config),
-    threads: 12
+    threads: 24
     conda: "../envs/gimme.yaml"
     shell:
         """
