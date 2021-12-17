@@ -27,7 +27,10 @@ rule binding:
 
         # for the log
         mkdir -p $outdir
-        
+
+        # additional log info
+        printf "using columns: {params.atac_samples}\n\n" > {log}
+
         ananse binding \
         -A {input.atac} \
         -c {params.atac_samples} \
@@ -37,7 +40,7 @@ rule binding:
         --jaccard-cutoff {params.jaccard} \
         -n {threads} \
         -o $outdir \
-        > {log} 2>&1
+        >> {log} 2>&1
         """
 
 # PARAMS
@@ -78,6 +81,9 @@ rule network:
         # for the log
         mkdir -p $outdir
 
+        # additional log info
+        printf "using columns: {params.rna_samples}\n\n" > {log}
+
         ananse network \
         {input.binding} \
         -e {input.genes} \
@@ -86,7 +92,7 @@ rule network:
         -o {output} \
         --full-output \
         -n {threads} \
-        > {log} 2>&1
+        >> {log} 2>&1
         """
 
 
