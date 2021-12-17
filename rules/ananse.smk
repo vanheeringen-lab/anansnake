@@ -154,11 +154,9 @@ rule plot:
         inf=rules.influence.output.inf,
         diff_inf=rules.influence.output.diff_inf,
     output:
-        expand("{result_dir}/plot/{{contrast}}.{plot_type}",**config),
+        expand("{result_dir}/plot/{{contrast}}/influence.{plot_type}",**config),
     log:
         expand("{result_dir}/plot/log_{{contrast}}.txt",**config),
-    benchmark:
-        expand("{result_dir}/benchmarks/plot_{{contrast}}.txt",**config)[0]
     params:
         type=config["plot_type"],
     threads: 1
