@@ -67,10 +67,4 @@ rule pfmscorefile:
         -n {threads} \
         > {output} \
         2> {log}
-        
-        # TODO: remove when fixed
-        # bug in gimme develop branch, see issue #231
-        cat {output} | grep -v "<_io.TextIOWrapper" > {resources.tmpdir}/pfm.tsv
-        cat {resources.tmpdir}/pfm.tsv > {output}
-        rm {resources.tmpdir}/pfm.tsv
         """

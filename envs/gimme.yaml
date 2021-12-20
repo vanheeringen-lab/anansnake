@@ -48,7 +48,7 @@ dependencies:
   - gcc  # maybe just on my machine?
   - pip
   - pip:
-    - git+https://github.com/vanheeringen-lab/gimmemotifs.git@m2f_fixes  # develop
+    - git+https://github.com/vanheeringen-lab/gimmemotifs.git@develop
 
   # eventually, this should be the only requirement:
   # - gimmemotifs>0.16.1
