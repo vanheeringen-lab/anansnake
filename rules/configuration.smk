@@ -117,6 +117,15 @@ for condition in CONDITIONS:
 for key in config:
     if config[key] not in ["", False, 0, "None"]:
         logger.info(f"{key: <23}: {config[key]}")
+
+for cond in CONDITIONS:
+    logger.info(
+	    f"Condition {cond: <13}:\n"
+	    f"  RNA-seq samples:  {CONDITIONS[cond]['RNA-seq samples']}\n"
+		f"  ATAC-seq samples: {CONDITIONS[cond]['ATAC-seq samples']}"
+    )
+logger.info("")
+
 sleep(1.5)
 
 # set default resource limits
