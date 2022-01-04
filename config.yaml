@@ -10,7 +10,7 @@ atac_samples: example/atac_samples.tsv
 atac_counts: example/GRCz11_raw.tsv
 
 genome: GRCz11  # genomepy install GRCz11 --annotation
-# genomes_dir: # where to search for/store genomes (default: $HOME/.local/share/genomes)
+# genomes_dir:  # where to search for/store genomes (default: $HOME/.local/share/genomes)
 
 # output
 result_dir: example/outdir
@@ -27,10 +27,10 @@ contrasts:
 # optional settings
 
 # ANANSE binding
-jaccard: 0.1
+jaccard: 0.2  # default: 0.1
 
 # ANANSE influence
-edges: 100_000
+edges: 500_000  # default: 100_000
 padj: 0.05
 
 # ANANSE plot
