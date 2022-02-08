@@ -64,7 +64,7 @@ rule pfmscorefile:
         -p {input.pfm} \
         -g {input.genome} \
         -Tz --gc \
-        -n {threads} \
+        -N {threads} \
         > {output} \
         2> {log}
         """
