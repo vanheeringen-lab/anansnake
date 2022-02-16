@@ -30,6 +30,6 @@ with open(str(snakemake.log), "w") as f:
                 new_reference=[snakemake.input.genome],
                 genomes_dir=snakemake.params.genomes_dir,
                 outdir=dirname(snakemake.output[0]),
-                tmpdir=join(snakemake.resources.tmpdir, "motif2factors"),
+                # tmpdir=join(snakemake.resources.tmpdir, "motif2factors"),
                 threads=snakemake.threads,
             )
