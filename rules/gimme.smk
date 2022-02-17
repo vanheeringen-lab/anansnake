@@ -14,26 +14,11 @@ rule motif2factors:
         expand("{result_dir}/gimme/log_{assembly}_m2f.txt", assembly=ASSEMBLY, **config),
     params:
         genomes_dir=config.get("genomes_dir"),
+        tmpdir=config.get("tmp_dir"),
     threads: 24
     conda: "../envs/gimme.yaml"
     script:
         "../scripts/motif2factors.py"
-# shell cmd always creates a m2f, even for supported genomes
-#     shell:
-#         """
-#         outdir=$(dirname {output})
-#
-#         # for the log
-#         mkdir -p $outdir
-#
-#         gimme motif2factors \
-#         --new-reference {input.genome} \
-#         --genomes_dir {params.genomes_dir} \
-#         --outdir $outdir \
-#         --tmpdir {resources.tmpdir} \
-#         --threads {threads} \
-#         > {log} 2>&1
-#         """
 
 
 rule pfmscorefile:
@@ -50,7 +35,7 @@ rule pfmscorefile:
         expand("{result_dir}/gimme/pfmscorefile.tsv", **config),
     log:
         expand("{result_dir}/gimme/log_{assembly}_pfmscorefile.txt", assembly=ASSEMBLY, **config),
-    threads: 24
+    threads: 12
     conda: "../envs/gimme.yaml"
     shell:
         """

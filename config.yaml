@@ -26,6 +26,9 @@ contrasts:
 
 # optional settings
 
+## gimme
+#tmp_dir: example/tmp
+
 # ANANSE binding
 jaccard: 0.2  # default: 0.1
 

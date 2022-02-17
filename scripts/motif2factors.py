@@ -26,10 +26,14 @@ with open(str(snakemake.log), "w") as f:
             # create an ortholog m2f
             from gimmemotifs.orthologs import motif2factor_from_orthologs
 
+            tmpdir = snakemake.params.tmpdir
+            if tmpdir is not None:
+                tmpdir = join(tmpdir, "motif2factors")
+            
             motif2factor_from_orthologs(
                 new_reference=[snakemake.input.genome],
                 genomes_dir=snakemake.params.genomes_dir,
                 outdir=dirname(snakemake.output[0]),
-                # tmpdir=join(snakemake.resources.tmpdir, "motif2factors"),
+                tmpdir=tmpdir,
                 threads=snakemake.threads,
             )
