@@ -10,11 +10,15 @@ from seq2science.util import parse_samples, parse_contrast
 # NOTE: global variables are written in all caps
 
 # check + fix file paths
-for item in ["result_dir", "rna_samples", "rna_counts", "rna_tpms", "atac_samples", "atac_counts"]:
+for item in ["result_dir", "tmp_dir", "rna_samples", "rna_counts", "rna_tpms", "atac_samples", "atac_counts"]:
+    if item == "tmp_dir" and "tmp_dir" not in config:
+        config[item] = None  # make it explicit
+        continue
+
     path = genomepy.utils.cleanpath(config[item])
 
     # create output dir
-    if item == "result_dir":
+    if item in ["result_dir", "tmp_dir"]:
         genomepy.utils.mkdir_p(path)
 
     # all files found?
@@ -52,12 +56,18 @@ for wf, samples in sampledict.items():
 
     # which column contains names present in the counts/TPM/peaks tables
     samplecol = "sample"
-    if "technical_replicates" in samples:
+    if config.get("use_descriptive_names") and "descriptive_name" in samples:
+        samplecol = "descriptive_name"
+    elif "technical_replicates" in samples:
         samplecol = "technical_replicates"
     elif "_trep" in samples:
         samplecol = "_trep"
 
     for contrast in config["contrasts"]:
+        if wf != "RNA-seq" and "+" in contrast:
+            # batch column only matters for RNA-seq
+            contrast = contrast.split("+")[1]
+
         batch, col, target, source = parse_contrast(contrast, samples, check=True)
         # conditions per contrast (order is important)
         if wf == "RNA-seq":
@@ -113,16 +123,32 @@ for condition in CONDITIONS:
         )
         sys.exit(1)
 
+# check if sample names found in the samples.tsv are found in the counts.tsv
+atac_cols = pd.read_csv(config["atac_counts"], sep="\t", comment="#", index_col=0, nrows=0).columns.to_list()
+rnac_cols = pd.read_csv(config["rna_counts"], sep="\t", comment="#", index_col=0, nrows=0).columns.to_list()
+rnat_cols = pd.read_csv(config["rna_tpms"], sep="\t", comment="#", index_col=0, nrows=0).columns.to_list()
+for condition in CONDITIONS:
+    for sample_type, cols in [["ATAC-seq samples", atac_cols], ["RNA-seq samples", rnac_cols], ["RNA-seq samples", rnat_cols]]:
+        missing = [s for s in CONDITIONS[condition][sample_type] if s not in cols]
+        if missing:
+            logger.error(
+                f"In contrast condition '{condition}', "
+                f"{sample_type} {', '.join(missing)} are missing from the counts (or TPM) file."
+                "(tip: to (de)select descritive names, set 'use_descriptive_names' in the config)"
+            )
+            sys.exit(1)
+
 # print config
 for key in config:
     if config[key] not in ["", False, 0, "None"]:
         logger.info(f"{key: <23}: {config[key]}")
 
-for cond in CONDITIONS:
+logger.info("")
+for condition in CONDITIONS:
     logger.info(
-	    f"Condition {cond: <13}:\n"
-	    f"  RNA-seq samples:  {CONDITIONS[cond]['RNA-seq samples']}\n"
-		f"  ATAC-seq samples: {CONDITIONS[cond]['ATAC-seq samples']}"
+        f"Condition {condition: <13}:\n"
+        f"  RNA-seq samples:  {CONDITIONS[condition]['RNA-seq samples']}\n"
+        f"  ATAC-seq samples: {CONDITIONS[condition]['ATAC-seq samples']}"
     )
 logger.info("")
 

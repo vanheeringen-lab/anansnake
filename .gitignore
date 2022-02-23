@@ -1,4 +1,6 @@
 .idea/
+.ipynb_checkpoints/
+__pycache__/
 **/.snakemake/
 **/ananse/
 example/outdir
