@@ -138,23 +138,32 @@ for condition in CONDITIONS:
             )
             sys.exit(1)
 
+# set default resource limits
+for res in ["deseq2"]:
+    if res not in workflow.global_resources:
+        workflow.global_resources[res] = 1
+
 # print config
+logger.info("Config")
 for key in config:
     if config[key] not in ["", False, 0, "None"]:
         logger.info(f"{key: <23}: {config[key]}")
-
 logger.info("")
+
+# print resources
+logger.info("Resources")
+for key in workflow.global_resources:
+    if key not in ["_nodes"]:
+        logger.info(f"{key: <23}: {workflow.global_resources[key]}")
+logger.info("")
+
+# print conditions
+logger.info("Conditions")
 for condition in CONDITIONS:
     logger.info(
-        f"Condition {condition: <13}:\n"
+        f"{condition: <23}:\n"
         f"  RNA-seq samples:  {CONDITIONS[condition]['RNA-seq samples']}\n"
         f"  ATAC-seq samples: {CONDITIONS[condition]['ATAC-seq samples']}"
     )
 logger.info("")
-
 sleep(1.5)
-
-# set default resource limits
-for res in ["deseq2", "network"]:
-    if res not in workflow.global_resources:
-        workflow.global_resources[res] = 1

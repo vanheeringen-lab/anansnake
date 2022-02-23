@@ -1,6 +1,6 @@
-# example command
-# snakemake --configfile config.yaml --use-conda --conda-frontend mamba -j 14 -rn
-# snakemake --configfile config.yaml --use-conda --conda-frontend mamba -j 28 -r > log.txt 2>&1
+# example commands:
+# snakemake --configfile example/config.yaml --dry-run
+# snakemake --configfile example/config.yaml --use-conda --conda-frontend mamba --resources mem_mb=40_000 -j 28 > log.txt 2>&1
 
 # input
 rna_samples: example/rna_samples.tsv
@@ -11,7 +11,7 @@ atac_samples: example/atac_samples.tsv
 atac_counts: example/GRCz11_raw.tsv
 
 genome: GRCz11  # genomepy install GRCz11 --annotation
-# genomes_dir:  # where to search for/store genomes (default: $HOME/.local/share/genomes)
+# genomes_dir:  # where to search for genomes (default: $HOME/.local/share/genomes)
 
 # output
 result_dir: example/outdir

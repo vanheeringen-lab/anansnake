@@ -1,17 +1,29 @@
-example data were obtained with the following script
+## Setup
+1. clone this repository with `git clone https://github.com/vanheeringen-lab/anansnake.git`
+2. `cd` into the anansnake directory
+3. create a conda environment with `mamba env create -f anansnake -f requirements.yaml`
+4. activate the conda environment with `conda activate anansnake`
 
-```python
-import pandas as pd
-from seq2science.util import parse_samples
+Anytime you run anansnake, cd into the anansnake directory and activate the conda environment.
 
-# load full dataframe, filter for some example columns
-for input_file in ["GRCz11-counts.tsv", "GRCz11-TPM.tsv"]:
-    df = pd.read_csv(input_file, sep="\t", index_col=0, comment='#')
-    samples = pd.read_csv("example/GRCz11_rna_samples.tsv", sep='\t', dtype='str', comment='#')
-    samples = parse_samples(samples, dict())
-    
-    # preserve column order
-    cols = [col for col in df.columns if col in set(samples["technical_replicates"])]
-    df = df[cols]
-    df.to_csv(f"example/{input_file}", sep="\t")
+## Running anansnake on the example data
+To check if everything is set up right, we can do a dry run:
+```bash
+snakemake --configfile example/config.yaml --dry-run
+```
+If you get an error, be sure to check the red text!
+I've added human-readable feedback where I could.
+
+With the example data, you still need to provide a genome and gene annotation.
+You can download the GRCz11 genome and gene annotation with 
+```bash
+genomepy install GRCz11 --annotation
+```
+If you do another dry run you should have no more errors, and see what is going to happen.
+
+To do the real run, you need to specify how many cores you want to use, and how much RAM you have:
+```bash
+snakemake --use-conda --conda-frontend mamba \
+--configfile example/config.yaml \
+--resources mem_mb=48_000 --cores 12
 ```
