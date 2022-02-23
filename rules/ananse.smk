@@ -20,6 +20,8 @@ rule binding:
         atac_samples=lambda wildcards: CONDITIONS[wildcards.condition]["ATAC-seq samples"],
         jaccard=config["jaccard"],
     threads: 1  # multithreading not required when using a pfmscorefile
+    resources:
+        mem_mb=40_000,  # 30-50 GB
     conda: "../envs/ananse.yaml"
     shell:
         """
@@ -73,7 +75,7 @@ rule network:
     threads: 1  # multithreading explodes memory
     resources:
         network=1,
-        mem_mb=24_000,
+        mem_mb=24_000,  # 8-24 GB
     conda: "../envs/ananse.yaml"
     shell:
         """
@@ -124,6 +126,8 @@ rule influence:
         edges=config["edges"],
         padj=config["padj"],
     threads: 12
+    resources:
+        mem_mb=24_000,  # 7-150 GB
     conda: "../envs/ananse.yaml"
     shell:
         """
