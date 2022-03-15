@@ -125,7 +125,7 @@ rule influence:
     params:
         edges=config["edges"],
         padj=config["padj"],
-    threads: 12
+    threads: 1  # multithreading not required with the new networkx implementation
     resources:
         mem_mb=24_000,  # 7-150 GB
     conda: "../envs/ananse.yaml"

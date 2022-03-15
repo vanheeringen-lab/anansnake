@@ -39,7 +39,7 @@ use_descriptive_names: false  # true for seq2science > 0.7.1
 jaccard: 0.2  # default: 0.1
 
 # ANANSE influence
-edges: 500_000  # default: 100_000
+edges: 500_000  # default: 500_000
 padj: 0.05
 
 # ANANSE plot
