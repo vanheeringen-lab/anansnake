@@ -11,7 +11,7 @@ rule binding:
         pfmscorefile=rules.pfmscorefile.output,
         genome=GENOME,
     output:
-        expand("{result_dir}/binding/{{condition}}/binding.h5", **config),
+        expand("{result_dir}/binding/{{condition}}.h5", ** config),
     log:
         expand("{result_dir}/binding/log_{{condition}}.txt", **config),
     benchmark:
@@ -25,7 +25,7 @@ rule binding:
     conda: "../envs/ananse.yaml"
     shell:
         """
-        outdir=$(dirname {output})
+        outdir=$(dirname {output})/{wildcards.condition}
 
         # for the log
         mkdir -p $outdir
@@ -43,6 +43,9 @@ rule binding:
         -n {threads} \
         -o $outdir \
         >> {log} 2>&1
+        
+        mv $outdir/binding.h5 {output}
+        rm -rf $outdir
         """
 
 # PARAMS
