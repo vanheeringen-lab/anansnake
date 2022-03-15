@@ -35,5 +35,6 @@ with open(str(snakemake.log), "w") as f:
                 genomes_dir=snakemake.params.genomes_dir,
                 outdir=dirname(snakemake.output[0]),
                 tmpdir=tmpdir,
+                keep_intermediate=snakemake.params.keeptmp,
                 threads=snakemake.threads,
             )

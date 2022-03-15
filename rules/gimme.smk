@@ -15,6 +15,7 @@ rule motif2factors:
     params:
         genomes_dir=config.get("genomes_dir"),
         tmpdir=config.get("tmp_dir"),
+        keeptmp=config.get("keep_tmp_data", False),
     threads: 24
     conda: "../envs/gimme.yaml"
     script:
