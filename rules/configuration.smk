@@ -50,9 +50,11 @@ sampledict = {
 }
 for wf, samples in sampledict.items():
     # check for minimal columns
-    assert "sample" in samples.columns
+    assert "sample" in samples.columns, \
+        f"column 'sample' not found in columns: {list(samples.columns)}"
     if wf == "RNA-seq":
-        assert "assembly" in samples.columns, "deseq2science requires an assembly column"
+        assert "assembly" in samples.columns, \
+            "deseq2science requires an 'assembly' column in the RNA-seq samples file"
 
     # which column contains names present in the counts/TPM/peaks tables
     samplecol = "sample"

@@ -26,6 +26,7 @@ rule binding:
     shell:
         """
         outdir=$(dirname {output})/{wildcards.condition}
+        trap "rm -rf $outdir;" EXIT
 
         # for the log
         mkdir -p $outdir
@@ -44,8 +45,9 @@ rule binding:
         -o $outdir \
         >> {log} 2>&1
         
-        mv $outdir/binding.h5 {output}
-        rm -rf $outdir
+        if [ ! -f $outdir/binding.h5 ]; then
+            mv $outdir/binding.h5 {output}
+        fi
         """
 
 # PARAMS
