@@ -29,8 +29,9 @@ contrasts:
 # optional settings
 
 
-# gimme (intermediate output location, can be None)
-tmp_dir: example/tmp
+# gimme
+database: gimme.vertebrate.v5.0  # options: https://gimmemotifs.readthedocs.io/en/master/overview.html#motif-databases
+tmp_dir: example/tmp  # intermediate output location, can be None
 keep_tmp_data: true  # keep the orthofinder output (in the tmp_dir)?
 
 # use descriptive names in the sample.tsv

@@ -9,7 +9,7 @@ rule motif2factors:
     input:
         genome=GENOME,
     output:
-        expand("{result_dir}/gimme/{assembly}.gimme.vertebrate.v5.0.pfm", assembly=ASSEMBLY, **config),
+        expand("{result_dir}/gimme/{assembly}.{database}.pfm", assembly=ASSEMBLY, **config),
     log:
         expand("{result_dir}/gimme/log_{assembly}_m2f.txt", assembly=ASSEMBLY, **config),
     params:
