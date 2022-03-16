@@ -45,7 +45,7 @@ rule binding:
         -o $outdir \
         >> {log} 2>&1
         
-        if [ ! -f $outdir/binding.h5 ]; then
+        if [ -f $outdir/binding.h5 ]; then
             mv $outdir/binding.h5 {output}
         fi
         """
