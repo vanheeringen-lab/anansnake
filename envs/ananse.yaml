@@ -30,7 +30,7 @@ dependencies:
   # ananse dev
   - pip
   - pip:
-    - git+https://github.com/vanheeringen-lab/ANANSE.git@tmp_tessa
+    - git+https://github.com/vanheeringen-lab/ANANSE.git@develop
 
   # eventually, this should be the only requirement:
   # - ananse>0.3.0
