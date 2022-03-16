@@ -163,7 +163,7 @@ rule plot:
         inf=rules.influence.output.inf,
         diff_inf=rules.influence.output.diff_inf,
     output:
-        expand("{result_dir}/plot/{{contrast}}/influence.{plot_type}",**config),
+        expand("{result_dir}/plot/{{contrast}}.{plot_type}",**config),
     log:
         expand("{result_dir}/plot/log_{{contrast}}.txt",**config),
     params:
@@ -172,7 +172,8 @@ rule plot:
     conda: "../envs/ananse.yaml"
     shell:
         """
-        outdir=$(dirname {output})
+        outdir=$(dirname {output})/{wildcards.contrast}
+        trap "rm -rf $outdir;" EXIT
 
         # for the log
         mkdir -p $outdir
@@ -184,4 +185,11 @@ rule plot:
         --full-output \
         -o $outdir \
         > {log} 2>&1
+        
+        if [ -f $outdir/influence.{params.type} ]; then
+            mv $outdir/influence.{params.type} {output}
+        fi
+        if [ -f $outdir/topTF_GRN.{params.type} ]; then
+            mv $outdir/topTF_GRN.{params.type} $(dirname {output})/{wildcards.contrast}_topTF_GRN.{params.type}
+        fi
         """
