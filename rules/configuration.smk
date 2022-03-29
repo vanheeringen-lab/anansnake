@@ -106,7 +106,7 @@ for condition in CONDITIONS:
         l -= 1
     if l > 1:
         logger.error(
-            "Contrast conditions may not be used in multiple columns! ",
+            "Contrast conditions may not be used in multiple columns! "
             f"'{condition}' occurs in more than one column ({CONDITIONS[condition]['column']})."
         )
         sys.exit(1)
