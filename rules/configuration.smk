@@ -112,10 +112,11 @@ for condition in CONDITIONS:
         sys.exit(1)
 
     # minimum number of samples per condition
-    if len(CONDITIONS[condition]["RNA-seq samples"]) < 2:
+    # (for RNA-seq at least 1 condition needs >1 samples)
+    if len(CONDITIONS[condition]["RNA-seq samples"]) < 1:
         logger.error(
             f"In contrast condition '{condition}', "
-            "one of the conditions has fewer than the minimum 2 RNA-seq samples"
+            "one of the conditions has no RNA-seq samples"
         )
         sys.exit(1)
     if len(CONDITIONS[condition]["ATAC-seq samples"]) < 1:
