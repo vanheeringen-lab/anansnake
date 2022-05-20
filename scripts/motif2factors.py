@@ -31,7 +31,7 @@ with open(str(snakemake.log), "w") as f:
                 tmpdir = join(tmpdir, "motif2factors")
             
             motif2factor_from_orthologs(
-                database=snakemake.params.database,
+                database=snakemake.wildcards.database,
                 new_reference=[snakemake.input.genome],
                 genomes_dir=snakemake.params.genomes_dir,
                 outdir=dirname(snakemake.output[0]),
