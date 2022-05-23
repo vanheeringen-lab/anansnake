@@ -14,6 +14,7 @@ rule motif2factors:
         expand("{result_dir}/gimme/log_{assembly}_m2f.txt", assembly=ASSEMBLY, **config),
     params:
         genomes_dir=config.get("genomes_dir"),
+        database=config.get("database", "gimme.vertebrate.v5.0"),
         tmpdir=config.get("tmp_dir"),
         keeptmp=config.get("keep_tmp_data", False),
     threads: 24
