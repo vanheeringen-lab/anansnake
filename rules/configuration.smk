@@ -6,12 +6,7 @@ import pandas as pd
 import genomepy
 from snakemake.logging import logger
 from seq2science.util import parse_contrast
-try:
-    # s2s >=0.9
-    from seq2science.util import dense_samples as parse_samples
-except ImportError:
-    # s2s < 0.9
-    from seq2science.util import parse_samples
+from seq2science.util import dense_samples as parse_samples
 
 
 # NOTE: global variables are written in all caps
