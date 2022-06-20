@@ -1,6 +1,6 @@
 # example commands:
 # snakemake --configfile example/config.yaml --dry-run
-# snakemake --configfile example/config.yaml --use-conda --conda-frontend mamba --resources mem_mb=40_000 -j 28 > log.txt 2>&1
+# snakemake --configfile example/config.yaml --use-conda --conda-frontend mamba --resources mem_mb=10_000 -j 14 > example/log.txt 2>&1
 
 # input
 rna_samples: example/rna_samples.tsv
