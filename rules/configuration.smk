@@ -6,12 +6,7 @@ import pandas as pd
 import genomepy
 from snakemake.logging import logger
 from seq2science.util import parse_contrast
-try:
-    # s2s >=0.9
-    from seq2science.util import dense_samples as parse_samples
-except ImportError:
-    # s2s < 0.9
-    from seq2science.util import parse_samples
+from seq2science.util import dense_samples as parse_samples
 
 
 # NOTE: global variables are written in all caps
@@ -46,8 +41,8 @@ rna_samples = pd.read_csv(config["rna_samples"], sep='\t', dtype='str', comment=
 atac_samples = pd.read_csv(config["atac_samples"], sep='\t', dtype='str', comment='#')
 # mimic s2s samples files
 # TODO: how to deal with unmerged replicates (technical/biological/merged in only 1 workflow)
-rna_samples = parse_samples(rna_samples, config)
-atac_samples = parse_samples(atac_samples, config)
+rna_samples = parse_samples(rna_samples, not config.get("merged_technical_reps", True), not config.get("merged_biological_reps", True), False, False)
+atac_samples = parse_samples(atac_samples, not config.get("merged_technical_reps", True), not config.get("merged_biological_reps", True), False, False)
 
 CONDITIONS = dict()
 CONTRASTS = dict()

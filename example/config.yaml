@@ -1,6 +1,6 @@
 # example commands:
 # snakemake --configfile example/config.yaml --dry-run
-# snakemake --configfile example/config.yaml --use-conda --conda-frontend mamba --resources mem_mb=40_000 -j 28 > log.txt 2>&1
+# snakemake --configfile example/config.yaml --use-conda --conda-frontend mamba --resources mem_mb=10_000 -j 14 > example/log.txt 2>&1
 
 # input
 rna_samples: example/rna_samples.tsv
@@ -34,8 +34,10 @@ database: gimme.vertebrate.v5.0  # options: https://gimmemotifs.readthedocs.io/e
 tmp_dir: example/tmp  # intermediate output location, can be None
 keep_tmp_data: true  # keep the orthofinder output (in the tmp_dir)?
 
-# use descriptive names in the sample.tsv
-use_descriptive_names: false  # true for seq2science > 0.7.1
+# seq2science options
+use_descriptive_names: true  # used descriptive names from the sample.tsv as counts table columns
+merged_technical_reps: true  # set to false if you used 'technical_replicates: "keep" in s2s'
+merged_biological_reps: true  # set to false if you used 'biological_replicates: "keep" in s2s'
 
 # ANANSE binding
 jaccard: 0.2  # default: 0.1

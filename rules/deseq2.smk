@@ -22,9 +22,10 @@ rule deseq2:
         mkdir -p $outdir
         
         deseq2science \
-        -d {wildcards.contrast} \
-        -s {input.rna_samples} \
-        -c {input.genes} \
-        -o $outdir \
+        {wildcards.contrast} \
+        {input.rna_samples} \
+        {input.genes} \
+        $outdir \
+        --assembly {ASSEMBLY} \
         > {log} 2>&1
         """

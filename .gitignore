@@ -1,6 +1,11 @@
 .idea/
 .ipynb_checkpoints/
 __pycache__/
+**/log.txt
 **/.snakemake/
 **/ananse/
-example/outdir
+anansenake.egg-info/
+build/
+example/config.yaml
+example/outdir/
+example/tmp/
