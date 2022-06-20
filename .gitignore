@@ -3,4 +3,7 @@
 __pycache__/
 **/.snakemake/
 **/ananse/
-example/outdir
+anansenake.egg-info/
+build/
+example/outdir/
+example/tmp/

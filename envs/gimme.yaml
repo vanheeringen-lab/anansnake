@@ -4,6 +4,6 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - gimmemotifs >=0.17.0
+  - gimmemotifs-minimal =0.17.1
   - gffread
   - orthofinder

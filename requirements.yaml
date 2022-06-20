@@ -4,4 +4,4 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - seq2science>=0.9.2
+  - seq2science =0.9.3
