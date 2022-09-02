@@ -30,9 +30,13 @@ contrasts:
 
 
 # gimme
+# if you are analyzing a genome for which gimme has a matching motif database, you do not need to find ortholog genes.
+# for example: with human/mouse, you can use "database: gimme.vertebrate.v5.0" with "get_orthologs: false",
+# for example: with zebrafish, you can use "database: gimme.vertebrate.v5.0" with "get_orthologs: true".
 database: gimme.vertebrate.v5.0  # options: https://gimmemotifs.readthedocs.io/en/master/overview.html#motif-databases
-tmp_dir: example/tmp  # intermediate output location, can be None
-keep_tmp_data: true  # keep the orthofinder output (in the tmp_dir)?
+get_orthologs: true  # map the database to the genome's gene annotation, using orthofinder.
+tmp_dir: example/tmp  # intermediate orthofinder output location, can be None
+keep_tmp_data: true  # keep the intermediate orthofinder output?
 
 # seq2science options
 use_descriptive_names: true  # used descriptive names from the sample.tsv as counts table columns

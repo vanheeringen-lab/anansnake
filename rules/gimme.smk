@@ -4,7 +4,7 @@ from snakemake.io import expand
 rule motif2factors:
     """
     Create a gimme pfm/motif2factor file.
-    For non-human/mouse, get ortholog TFs.
+    If get_orthologs is True, find ortholog TFs, else copy the database files as-is.
     """
     input:
         genome=GENOME,
@@ -15,6 +15,7 @@ rule motif2factors:
     params:
         genomes_dir=config.get("genomes_dir"),
         database=config.get("database", "gimme.vertebrate.v5.0"),
+        get_orthologs=config.get("get_orthologs", True),
         tmpdir=config.get("tmp_dir"),
         keeptmp=config.get("keep_tmp_data", False),
     threads: 24

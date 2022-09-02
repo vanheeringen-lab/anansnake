@@ -2,18 +2,17 @@ from contextlib import redirect_stdout, redirect_stderr
 from os.path import dirname, join
 from shutil import copyfile
 
-# human and mouse are supported by the default m2f
-supported_genome_prefixes = ["GRCh", "GRCm", "hg19", "hg38", "mm10", "mm39"]
 
 # log errors
 with open(str(snakemake.log), "w") as f:
     with redirect_stdout(f), redirect_stderr(f):
 
-        if snakemake.input.genome[:4] in supported_genome_prefixes:
+        if snakemake.params.get_orthologs is False:
             # copy the default m2f
+            print(f"Copying the motif database ({snakemake.params.database})")
             from gimmemotifs.motif import pfmfile_location
 
-            in_pfmfile = pfmfile_location(None)
+            in_pfmfile = pfmfile_location(snakemake.params.database)
             out_pfmfile = snakemake.output[0]
 
             in_m2ffile = in_pfmfile.replace(".pfm", ".motif2factors.txt")
