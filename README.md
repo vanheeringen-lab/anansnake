@@ -7,7 +7,7 @@ Link seq2science output to ANANSE with 2 sample tables and one config file.
 ## Setup
 1. clone this repository with `git clone https://github.com/vanheeringen-lab/anansnake.git`
 2. `cd` into the anansnake directory
-3. create a conda environment with `mamba env create -f anansnake -f requirements.yaml`
+3. create a conda environment with `mamba env create -n anansnake -f requirements.yaml`
 4. activate the conda environment with `conda activate anansnake`
 
 Anytime you run anansnake, cd into the anansnake directory and activate the conda environment.
