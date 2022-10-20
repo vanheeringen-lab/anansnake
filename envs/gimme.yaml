@@ -1,9 +1,9 @@
 name: ananse
 channels:
-  - bioconda
   - conda-forge
+  - bioconda
   - defaults
 dependencies:
-  - gimmemotifs-minimal =0.17.1
+  - gimmemotifs-minimal =0.17.2
   - gffread
   - orthofinder

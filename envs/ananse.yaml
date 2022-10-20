@@ -1,35 +1,7 @@
 name: ananse
 channels:
-  - bioconda
   - conda-forge
+  - bioconda
   - defaults
 dependencies:
-  # ananse dependencies
-  - python >=3.7
-  - setuptools >=0.7
-  - adjusttext
-  - dask
-  - genomepy >=0.11.0
-  - gimmemotifs-minimal =0.17.1
-  - loguru
-  - matplotlib >=2
-  - networkx
-  - numpy
-  - openpyxl
-  - pandas
-  - pybedtools
-  - pydot >=1.4.1   # required for networkx plots
-  - pygraphviz >=1.7   # required for networkx plots
-  - pyranges
-  - pytables  # required for pandas.read_hfd()
-  - scikit-learn
-  - scipy >=0.9.0
-  - seaborn
-  - tqdm
-  # ananse dev
-  - pip
-  - pip:
-    - git+https://github.com/vanheeringen-lab/ANANSE.git@b1c0e2a647be2302c2f02c98e9bbe8dfcb79f038
-
-  # eventually, this should be the only requirement:
-  # - ananse =0.4.0
+  - ananse =0.4.0

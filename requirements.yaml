@@ -1,7 +1,7 @@
-name: anansnake_dev
+name: anansnake
 channels:
-  - bioconda
   - conda-forge
+  - bioconda
   - defaults
 dependencies:
   - seq2science =0.9.3
