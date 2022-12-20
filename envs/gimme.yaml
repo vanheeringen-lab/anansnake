@@ -7,3 +7,9 @@ dependencies:
   - gimmemotifs-minimal =0.17.2
   - gffread
   - orthofinder
+  - xgboost  # optional maelstrom dependency
+
+  # TODO: remove with gimmemotifs-minimal =0.18.0
+  - pip
+  - pip:
+      - git+https://github.com/vanheeringen-lab/gimmemotifs.git@develop

@@ -56,3 +56,21 @@ rule pfmscorefile:
         > {output} \
         2> {log}
         """
+
+
+rule maelstrom:
+    """
+    Find differential motifs
+    """
+    input:
+        regions=config["atac_counts"],
+        pfm=rules.motif2factors.output,
+        genome=GENOME,
+    output:
+        directory(expand("{result_dir}/gimme/{assembly}-maelstrom", assembly=ASSEMBLY, **config)),
+    log:
+        expand("{result_dir}/gimme/log_{assembly}_maelstrom.txt", assembly=ASSEMBLY, **config),
+    threads: 24
+    conda: "../envs/gimme.yaml"
+    script:
+        "../scripts/maelstrom.py"
