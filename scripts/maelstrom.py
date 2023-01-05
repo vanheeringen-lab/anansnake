@@ -38,10 +38,10 @@ with open(str(log), "a") as f:
         df = np.log2(df + 1)
         df = qnorm.quantile_normalize(df)
 
-        #reduce df lenght to only highly variable rows if df length > 50.000
-        if len(df) > 50000:
+        # only use highly variable regions
+        if len(df) > 50_000:
             df['variance'] = df.var(axis = 1)
-            df = df.sort_values('variance', ascending = False)[1:50000]
+            df = df.sort_values('variance', ascending = False).head(50_000)
             df = df.drop('variance', axis = 1)
 
         # save count matrix to temporary file
