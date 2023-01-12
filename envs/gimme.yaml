@@ -4,6 +4,7 @@ channels:
   - bioconda
   - defaults
 dependencies:
-  - gimmemotifs-minimal =0.17.2
+  - gimmemotifs-minimal =0.18.0
   - gffread
   - orthofinder
+  - xgboost  # optional maelstrom dependency

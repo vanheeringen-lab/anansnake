@@ -10,7 +10,7 @@ with open(str(snakemake.log), "w") as f:
         if snakemake.params.get_orthologs is False:
             # copy the default m2f
             print(f"Copying the motif database ({snakemake.params.database})")
-            from gimmemotifs.motif import pfmfile_location
+            from gimmemotifs.utils import pfmfile_location
 
             in_pfmfile = pfmfile_location(snakemake.params.database)
             out_pfmfile = snakemake.output[0]
