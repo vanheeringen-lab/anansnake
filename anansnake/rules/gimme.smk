@@ -73,6 +73,8 @@ rule maelstrom:
     params:
         atac_samples=lambda wildcards : sorted({sample for vals in CONDITIONS.values() for sample in vals}),
     threads: 24
+    resources:
+        mem_mb=40_000,
     conda: "../envs/gimme.yaml"
     script:
         "../scripts/maelstrom.py"
