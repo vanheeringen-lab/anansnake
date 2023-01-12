@@ -71,7 +71,7 @@ rule maelstrom:
     log:
         expand("{result_dir}/gimme/log_{assembly}_maelstrom.txt", assembly=ASSEMBLY, **config),
     params:
-        atac_samples=lambda wildcards : sorted({sample for vals in CONDITIONS.values() for sample in vals}),
+        atac_samples=lambda wildcards : sorted({sample for v in CONDITIONS.values() for sample in v['ATAC-seq samples']}),
     threads: 24
     resources:
         mem_mb=40_000,
