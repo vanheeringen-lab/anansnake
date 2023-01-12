@@ -1,6 +1,10 @@
 # example commands:
-# snakemake --configfile example/config.yaml --dry-run
-# snakemake --configfile example/config.yaml --use-conda --conda-frontend mamba --resources mem_mb=10_000 -j 14 > example/log.txt 2>&1
+#
+# mamba create -n anansnake anansnake
+# mamba activate anansnake
+#
+# anansnake --configfile example/config.yaml --dry-run
+# anansnake --configfile example/config.yaml --resources mem_mb=10_000 -j 14 > example/log.txt 2>&1
 
 # input
 rna_samples: example/rna_samples.tsv
@@ -35,7 +39,7 @@ contrasts:
 # for example: with zebrafish, you can use "database: gimme.vertebrate.v5.0" with "get_orthologs: true".
 database: gimme.vertebrate.v5.0  # options: https://gimmemotifs.readthedocs.io/en/master/overview.html#motif-databases
 get_orthologs: true  # map the database to the genome's gene annotation, using orthofinder.
-tmp_dir: example/tmp  # intermediate orthofinder output location, can be None
+tmp_dir: example/outdir/tmp  # intermediate orthofinder output location, can be None
 keep_tmp_data: true  # keep the intermediate orthofinder output?
 
 # seq2science options

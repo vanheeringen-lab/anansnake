@@ -4,18 +4,21 @@ Link seq2science output to ANANSE with 2 sample tables and one config file.
 
 ![](docs/img/anansnake.PNG)
 
-## Setup
-1. clone this repository with `git clone https://github.com/vanheeringen-lab/anansnake.git`
-2. `cd` into the anansnake directory
-3. create a conda environment with `mamba env create -n anansnake -f requirements.yaml`
-4. activate the conda environment with `conda activate anansnake`
+## Installation
+```bash
+mamba create -n anansnake -c bioconda anansnake
+```
 
-Anytime you run anansnake, cd into the anansnake directory and activate the conda environment.
+Don't forget to activate the conda environment with `mamba activate anansnake`.
 
 ## Running anansnake on the example data
+The anansnake github repository contains an `example` folder which can be downloaded to try the workflow.
+Here we assume you've downloaded the folder in your current working directory.
+Check [it's README](https://github.com/vanheeringen-lab/anansnake/blob/master/example/README.md) for additional details!
+
 To check if everything is set up right, we can do a dry run:
 ```bash
-snakemake --configfile example/config.yaml --dry-run
+anansnake --configfile example/config.yaml --dry-run
 ```
 If you get an error, be sure to check the red text!
 I've added human-readable feedback where I could.
@@ -29,16 +32,18 @@ If you do another dry run you should have no more errors, and see what is going 
 
 To do the real run, you need to specify how many cores you want to use, and how much RAM you have:
 ```bash
-snakemake --use-conda --conda-frontend mamba \
---configfile example/config.yaml \
---resources mem_mb=48_000 --cores 12
+anansnake --configfile example/config.yaml --resources mem_mb=48_000 --cores 12
 ```
 
 ## Running anansnake
-Anansnake works with seq2science output. The RNA- and ATAC-seq samples files are the same as you've used for seq2science, with a shared (set of) column(s) for the contrasts.
+Anansnake works with seq2science in- & output: The RNA- and ATAC-seq `samples.tsv` files are the same you've used for seq2science, with one addition (see below).
+The counts tables are output files without any changes.
 
-For files and settings you can use the example config.yaml.
+The RNA- and ATAC-seq samples are combined via a shared column in the samples.tsv files.
+In the example data, this is the `anansnake` column.
+Which conditions from the `anansnake` column are compared is set in the `config.yaml` file, under `contrasts`. 
+
+For files and settings you can check out the example folder.
 
 ## Troubleshooting
 ANANSE can take tonnes of memory. If your machine freezes, reduce the number of threads or mem_mb.
-
