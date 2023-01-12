@@ -48,6 +48,7 @@ merged_technical_reps: true  # set to false if you used 'technical_replicates: "
 merged_biological_reps: true  # set to false if you used 'biological_replicates: "keep" in s2s'
 
 # ANANSE binding
+enhancer_data: "ATAC"  # experimental option "p300"
 jaccard: 0.2  # default: 0.1
 
 # ANANSE influence
