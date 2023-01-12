@@ -1,0 +1,40 @@
+[project]
+name = "anansnake"
+description = "Automated ANANSE analysis with seq2science & snakemake!"
+authors = [
+    {name = "Siebren Frölich", email = "siebrenf@gmail.com"},
+]
+maintainers = [
+    {name = "Siebren Frölich", email = "siebrenf@gmail.com"},
+]
+
+requires-python = ">=3.8"
+dependencies = [
+    "seq2science ==0.9.7",
+]
+
+dynamic = ["version"]
+readme = "README.md"
+license = {file = "LICENSE"}
+keywords = [
+    "GRN",
+    "gene regulatory network",
+    "molecular developmental biology",
+    "ANANSE",
+    "Seq2Science",
+]
+
+[project.urls]
+Homepage = "https://github.com/vanheeringen-lab/anansnake"
+News = "https://github.com/vanheeringen-lab/anansnake/blob/master/CHANGELOG.md"
+Readme = "https://github.com/vanheeringen-lab/anansnake/blob/master/README.md"
+
+[project.scripts]
+anansnake = "anansnake.scripts.cli:cli"
+
+[build-system]
+requires = ["hatchling>=1.5.0"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "anansnake/__init__.py"

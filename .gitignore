@@ -1,6 +1,6 @@
 .idea/
 .ipynb_checkpoints/
-__pycache__/
+**/__pycache__/
 **/log.txt
 **/.snakemake/
 **/ananse/
@@ -9,4 +9,3 @@ build/
 dask-worker-space/
 example/config.yaml
 example/outdir/
-example/tmp/
