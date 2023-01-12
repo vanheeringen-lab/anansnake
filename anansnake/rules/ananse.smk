@@ -18,6 +18,7 @@ rule binding:
         expand("{result_dir}/benchmarks/binding_{{condition}}.txt", **config)[0]
     params:
         atac_samples=lambda wildcards: CONDITIONS[wildcards.condition]["ATAC-seq samples"],
+        enhancer_data=lambda wildcards: "-P" if config.get("enhancer_data") == "p300" else "-A",
         jaccard=config["jaccard"],
     threads: 1  # multithreading not required when using a pfmscorefile
     resources:
@@ -35,7 +36,7 @@ rule binding:
         printf "using columns: {params.atac_samples}\n\n" > {log}
 
         ananse binding \
-        -A {input.atac} \
+        {params.enhancer_data} {input.atac} \
         -c {params.atac_samples} \
         -g {input.genome} \
         -p {input.pfm} \

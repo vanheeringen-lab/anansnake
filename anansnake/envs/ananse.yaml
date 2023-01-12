@@ -5,3 +5,7 @@ channels:
   - defaults
 dependencies:
   - ananse =0.4.1
+
+  - pip
+  - pip:
+      - git+https://github.com/vanheeringen-lab/ANANSE.git@p300_2
