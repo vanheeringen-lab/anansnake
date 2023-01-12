@@ -6,9 +6,10 @@
 4. activate the conda environment with `mamba activate anansnake`
 
 ## Running anansnake on the example data
+
 To check if everything is set up right, we can do a dry run:
 ```bash
-anansnake --configfile example/config.yaml --dry-run
+anansnake --configfile example/config.yaml --resources mem_mb=48_000 --cores 12 --dry-run --reason
 ```
 If you get an error, be sure to check the red text!
 I've added human-readable feedback where I could.
