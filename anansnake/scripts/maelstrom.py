@@ -37,17 +37,24 @@ with open(str(log), "a") as f:
         if "average" in df.columns:
             df.drop(columns=["average"], inplace=True)
 
-        # filter for samples in the conditions
-        logger.info(f"columns found in ATAC-seq read counts table: {df.columns}")
-        cols = "|".join(columns)
-        re_column = re.compile(rf"^{cols}$", re.IGNORECASE)
-        df = df.filter(regex=re_column)
-        logger.info(f"columns used for maelstrom: {df.columns}")
-        if len(columns) != len(df.columns):
-            logger.warning(
-                f"{len(columns)} expected in ATAC-seq read counts table, "
-                f"{len(df.columns)} found after filtering."
-            )
+        # filter for the ATAC-seq samples in the conditions
+        raw_columns = df.columns.to_list()
+        if not sorted(columns).__eq__(sorted(raw_columns)):
+            cols = "|".join(columns)
+            re_column = re.compile(rf"^{cols}$", re.IGNORECASE)
+            df = df.filter(regex=re_column, axis=1)
+
+            if len(columns) != len(df.columns):
+                logger.warning(
+                    f"{len(columns)} expected in ATAC-seq read counts table, "
+                    f"{len(raw_columns)} found before & "
+                    f"{len(df.columns)} found after filtering."
+                )
+                logger.info(f"expected: {columns}")
+                logger.info(f"columns found before filtering: {raw_columns}")
+                logger.info(f"columns found after filtering: {df.columns.to_list()}")
+
+            assert df.shape[1] > 0, "empty dataframe after filtering columns!"
 
         # remove zero rows (introduced by filtering columns)
         df = df[df.values.sum(axis=1) != 0]
