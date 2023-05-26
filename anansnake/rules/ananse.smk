@@ -11,11 +11,11 @@ rule binding:
         pfmscorefile=rules.pfmscorefile.output,
         genome=GENOME,
     output:
-        expand("{result_dir}/binding/{{condition}}.h5", ** config),
+        expand("{binding_dir}/{{condition}}.h5", ** config),
     log:
-        expand("{result_dir}/binding/log_{{condition}}.txt", **config),
+        expand("{log_dir}/binding_{{condition}}.txt", **config),
     benchmark:
-        expand("{result_dir}/benchmarks/binding_{{condition}}.txt", **config)[0]
+        expand("{benchmark_dir}/binding_{{condition}}.txt", **config)[0]
     params:
         atac_samples=lambda wildcards: CONDITIONS[wildcards.condition]["ATAC-seq samples"],
         enhancer_data=lambda wildcards: "-P" if config.get("enhancer_data") == "p300" else "-A",
@@ -71,11 +71,11 @@ rule network:
         genes=config["rna_tpms"],
         genome=GENOME,
     output:
-        expand("{result_dir}/network/{{condition}}.tsv",**config),
+        expand("{network_dir}/{{condition}}.tsv",**config),
     log:
-        expand("{result_dir}/network/log_{{condition}}.txt",**config),
+        expand("{log_dir}/network_{{condition}}.txt",**config),
     benchmark:
-        expand("{result_dir}/benchmarks/network_{{condition}}.txt",**config)[0]
+        expand("{benchmark_dir}/network_{{condition}}.txt",**config)[0]
     params:
         rna_samples=lambda wildcards: CONDITIONS[wildcards.condition]["RNA-seq samples"],
     threads: 1  # multithreading explodes memory
@@ -106,10 +106,10 @@ rule network:
 
 
 def get_source(wildcards):
-    return f"{config['result_dir']}/network/{CONTRASTS[wildcards.contrast]['source']}.tsv"
+    return f"{config['network_dir']}/{CONTRASTS[wildcards.contrast]['source']}.tsv"
 
 def get_target(wildcards):
-    return f"{config['result_dir']}/network/{CONTRASTS[wildcards.contrast]['target']}.tsv"
+    return f"{config['network_dir']}/{CONTRASTS[wildcards.contrast]['target']}.tsv"
 
 rule influence:
     """
@@ -122,12 +122,12 @@ rule influence:
         degenes=rules.deseq2.output,
         genome=GENOME,
     output:
-        inf = expand("{result_dir}/influence/{{contrast}}.tsv",**config),
-        diff_inf = expand("{result_dir}/influence/{{contrast}}_diffnetwork.tsv",** config),
+        inf = expand("{influence_dir}/{{contrast}}.tsv",**config),
+        diff_inf = expand("{influence_dir}/{{contrast}}_diffnetwork.tsv",** config),
     log:
-        expand("{result_dir}/influence/log_{{contrast}}.txt",**config),
+        expand("{log_dir}/influence_{{contrast}}.txt",** config)[0]
     benchmark:
-        expand("{result_dir}/benchmarks/influence_{{contrast}}.txt",**config)[0]
+        expand("{benchmark_dir}/influence_{{contrast}}.txt",**config)[0]
     params:
         edges=config["edges"],
         padj=config["padj"],
@@ -164,9 +164,9 @@ rule plot:
         inf=rules.influence.output.inf,
         diff_inf=rules.influence.output.diff_inf,
     output:
-        expand("{result_dir}/plot/{{contrast}}.{plot_type}",**config),
+        expand("{plot_dir}/{{contrast}}.{plot_type}",**config),
     log:
-        expand("{result_dir}/plot/log_{{contrast}}.txt",**config),
+        expand("{log_dir}/plot_{{contrast}}.txt",**config),
     params:
         type=config["plot_type"],
     threads: 1

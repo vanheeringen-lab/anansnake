@@ -9,5 +9,5 @@ include: "rules/ananse.smk"
 
 rule all:
     input:
-        expand("{result_dir}/plot/{contrasts}.{plot_type}", **config),
-        rules.maelstrom.output,
+        expand("{plot_dir}/{contrasts}.{plot_type}", **config),
+        rules.maelstrom.output if config.get("run_maelstrom") else [],

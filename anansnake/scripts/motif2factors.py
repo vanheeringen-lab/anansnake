@@ -1,4 +1,5 @@
 from contextlib import redirect_stdout, redirect_stderr
+from os import makedirs
 from os.path import dirname, join
 from shutil import copyfile
 
@@ -25,16 +26,17 @@ with open(str(snakemake.log), "w") as f:
             # create an ortholog m2f
             from gimmemotifs.orthologs import motif2factor_from_orthologs
 
-            tmpdir = snakemake.params.tmpdir
-            if tmpdir is not None:
-                tmpdir = join(tmpdir, "motif2factors")
+            outdir = dirname(snakemake.output[0])
+            tmpdir = None
+            if snakemake.params.keep_tmp:
+                tmpdir = join(outdir, "orthofinder")
             
             motif2factor_from_orthologs(
                 database=snakemake.params.database,
                 new_reference=[snakemake.input.genome],
                 genomes_dir=snakemake.params.genomes_dir,
-                outdir=dirname(snakemake.output[0]),
+                outdir=outdir,
                 tmpdir=tmpdir,
-                keep_intermediate=snakemake.params.keeptmp,
+                keep_intermediate=snakemake.params.keep_tmp,
                 threads=snakemake.threads,
             )
