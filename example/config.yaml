@@ -15,7 +15,7 @@ atac_samples: example/atac_samples.tsv
 atac_counts: example/GRCz11_raw.tsv
 
 genome: GRCz11  # genomepy install GRCz11 --annotation
-genomes_dir: ~/genomes  # where to search for genomes (default: $HOME/.local/share/genomes)
+# genomes_dir:  # where to search for genomes (default: $HOME/.local/share/genomes)
 
 # output
 result_dir: example/outdir

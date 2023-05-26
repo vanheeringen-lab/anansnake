@@ -1,5 +1,4 @@
 from contextlib import redirect_stdout, redirect_stderr
-from os import makedirs
 from os.path import dirname, join
 from shutil import copyfile
 
