@@ -1,4 +1,4 @@
-name: ananse
+name: gimme
 channels:
   - conda-forge
   - bioconda
