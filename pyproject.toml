@@ -10,7 +10,7 @@ maintainers = [
 
 requires-python = ">=3.8"
 dependencies = [
-    "seq2science ==0.9.7",
+    "seq2science ==1.2.0",
 ]
 
 dynamic = ["version"]
