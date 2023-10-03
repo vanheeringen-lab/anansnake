@@ -5,6 +5,8 @@ channels:
   - defaults
 dependencies:
   - ananse =0.4.1
+  - pandas <2.1
+  - dask <=2023.9.1
 
   - pip
   - pip:
