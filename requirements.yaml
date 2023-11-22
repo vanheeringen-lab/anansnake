@@ -4,4 +4,4 @@ channels:
   - bioconda
   - defaults
 dependencies:
-  - seq2science =1.2.0
+  - seq2science =1.2.1
