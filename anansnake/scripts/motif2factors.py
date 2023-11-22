@@ -29,7 +29,7 @@ with open(str(snakemake.log), "w") as f:
             tmpdir = None
             if snakemake.params.keep_tmp:
                 tmpdir = join(outdir, "orthofinder")
-            
+
             motif2factor_from_orthologs(
                 database=snakemake.params.database,
                 new_reference=[snakemake.input.genome],
