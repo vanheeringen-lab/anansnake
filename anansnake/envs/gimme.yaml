@@ -8,3 +8,7 @@ dependencies:
   - gffread
   - orthofinder
   - xgboost  # optional maelstrom dependency
+
+  - pip
+  - pip:
+      - git+https://github.com/vanheeringen-lab/gimmemotifs@report
