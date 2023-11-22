@@ -11,25 +11,28 @@ from seq2science.util import dense_samples as parse_samples
 
 # NOTE: global variables are written in all caps
 
-# check + fix file paths
-for item in ["result_dir", "tmp_dir", "rna_samples", "rna_counts", "rna_tpms", "atac_samples", "atac_counts"]:
-    if item == "tmp_dir" and "tmp_dir" not in config:
-        config[item] = None  # make it explicit
-        continue
+# check directories
+for d in ["result", "gimme", "deseq2", "binding", "network", "influence", "plot", "log", "benchmark"]:
+    key = f"{d}_dir"
+    if not config.get(key):
+        if key == "result_dir":
+            raise KeyError("A 'result_dir' is required in the config")
+        else:
+            config[key] = os.path.join(config["result_dir"], d)
+    else:
+        config[key] = genomepy.utils.cleanpath(config[key])
 
-    path = genomepy.utils.cleanpath(config[item])
-
-    # create output dir
-    if item in ["result_dir", "tmp_dir"]:
-        genomepy.utils.mkdir_p(path)
+# check files
+for f in ["rna_samples", "rna_counts", "rna_tpms", "atac_samples", "atac_counts"]:
+    path = genomepy.utils.cleanpath(config[f])
 
     # all files found?
-    elif not os.path.exists(path):
-        logger.error(f"could not find '{item}' in {path}")
+    if not os.path.exists(path):
+        logger.error(f"could not find '{f}' in {path}")
         sys.exit(1)
 
     # save absolute path
-    config[item] = path
+    config[f] = path
 
 # check if the genome is found + add to globals
 g = genomepy.Genome(config["genome"], config.get("genomes_dir"), build_index=False)

@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+### Changed
+
+- all output folders can now be configured
+- running gimme maelstrom is now optional
+
+### Fixed
+
+- ANANSE errors ("No regions overlap")
+
+## [0.0.1] - 2023-01-12
+
 ### Added
 
 - run differential gene expression analysis using `DESeq2` from `Seq2Science` RNA-seq output
