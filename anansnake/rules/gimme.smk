@@ -9,15 +9,14 @@ rule motif2factors:
     input:
         genome=GENOME,
     output:
-        expand("{result_dir}/gimme/{assembly}.{database}.pfm", assembly=ASSEMBLY, **config),
+        expand("{gimme_dir}/{assembly}.{database}.pfm", assembly=ASSEMBLY, **config),
     log:
-        expand("{result_dir}/gimme/log_{assembly}_m2f.txt", assembly=ASSEMBLY, **config),
+        expand("{log_dir}/gimme_m2f.txt", **config),
     params:
         genomes_dir=config.get("genomes_dir"),
         database=config.get("database", "gimme.vertebrate.v5.0"),
         get_orthologs=config.get("get_orthologs", True),
-        tmpdir=config.get("tmp_dir"),
-        keeptmp=config.get("keep_tmp_data", False),
+        keep_tmp=config.get("keep_ortholog_data", False),
     threads: 24
     conda: "../envs/gimme.yaml"
     script:
@@ -35,9 +34,9 @@ rule pfmscorefile:
         pfm=rules.motif2factors.output,
         genome=GENOME,
     output:
-        expand("{result_dir}/gimme/pfmscorefile.tsv", **config),
+        expand("{gimme_dir}/pfmscorefile.tsv", **config),
     log:
-        expand("{result_dir}/gimme/log_{assembly}_pfmscorefile.txt", assembly=ASSEMBLY, **config),
+        expand("{log_dir}/gimme_pfmscorefile.txt", **config),
     threads: 12
     conda: "../envs/gimme.yaml"
     shell:
@@ -67,9 +66,9 @@ rule maelstrom:
         pfm=rules.motif2factors.output,
         genome=GENOME,
     output:
-        directory(expand("{result_dir}/gimme/{assembly}-maelstrom", assembly=ASSEMBLY, **config)),
+        directory(expand("{gimme_dir}/{assembly}-maelstrom", assembly=ASSEMBLY, **config)),
     log:
-        expand("{result_dir}/gimme/log_{assembly}_maelstrom.txt", assembly=ASSEMBLY, **config),
+        expand("{log_dir}/gimme_maelstrom.txt", **config),
     params:
         atac_samples=lambda wildcards : sorted({sample for v in CONDITIONS.values() for sample in v['ATAC-seq samples']}),
     threads: 24

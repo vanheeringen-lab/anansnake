@@ -4,6 +4,4 @@ channels:
   - bioconda
   - defaults
 dependencies:
-  - ananse =0.4.1
-  - pandas <2.1
-  - dask <=2023.9.1
+  - ananse =0.5.0

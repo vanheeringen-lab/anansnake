@@ -26,8 +26,8 @@ result_dir: example/outdir
 # groups must be present in this column
 # for RNA-seq, each group must have 2 or more samples (for DESeq2)
 contrasts:
-  - "anansnake_group2_group1"
-  - "anansnake_group1_group2"
+  - anansnake_group2_group1
+  - anansnake_group1_group2
 
 
 # optional settings
@@ -39,8 +39,10 @@ contrasts:
 # for example: with zebrafish, you can use "database: gimme.vertebrate.v5.0" with "get_orthologs: true".
 database: gimme.vertebrate.v5.0  # options: https://gimmemotifs.readthedocs.io/en/master/overview.html#motif-databases
 get_orthologs: true  # map the database to the genome's gene annotation, using orthofinder.
-tmp_dir: example/outdir/tmp  # intermediate orthofinder output location, can be None
-keep_tmp_data: true  # keep the intermediate orthofinder output?
+keep_ortholog_data: true  # keep the intermediate orthofinder output?
+
+# run gimme maelstrom on the enhancer data
+run_maelstrom: false
 
 # seq2science options
 use_descriptive_names: true  # used descriptive names from the sample.tsv as counts table columns
@@ -55,4 +57,4 @@ edges: 500_000  # default: 500_000
 padj: 0.05
 
 # ANANSE plot
-plot_type: "png"
+plot_type: png
