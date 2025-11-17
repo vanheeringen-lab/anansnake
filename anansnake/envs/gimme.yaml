@@ -4,6 +4,7 @@ channels:
   - bioconda
   - defaults
 dependencies:
+  - python =3.10
   - gimmemotifs-minimal =0.18.0
   - gffread
   - orthofinder
