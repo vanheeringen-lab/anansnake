@@ -2,7 +2,6 @@ name: gimme
 channels:
   - conda-forge
   - bioconda
-  - defaults
 dependencies:
   - python =3.10
   - gimmemotifs-minimal =0.18.0

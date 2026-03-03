@@ -2,6 +2,5 @@ name: anansnake
 channels:
   - conda-forge
   - bioconda
-  - defaults
 dependencies:
-  - seq2science =1.2.4
+  - seq2science =1.2.5
