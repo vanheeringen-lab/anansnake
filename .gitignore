@@ -6,6 +6,7 @@
 **/ananse/
 anansenake.egg-info/
 build/
+config.yaml
 dask-worker-space/
 example/config.yaml
 example/outdir/
