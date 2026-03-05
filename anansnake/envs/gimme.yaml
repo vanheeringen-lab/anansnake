@@ -9,6 +9,7 @@ dependencies:
   - orthofinder
   - xgboost  # optional maelstrom dependency
 
+  # TODO: check if this is still needed
   - pip
   - pip:
       - git+https://github.com/vanheeringen-lab/gimmemotifs@report
