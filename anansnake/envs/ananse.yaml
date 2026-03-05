@@ -2,9 +2,9 @@ name: ananse
 channels:
   - conda-forge
   - bioconda
-  - defaults
 dependencies:
-  - ananse =0.5.0
+  - python =3.10
+  - ananse =0.5.1
 
   - pip
   - pip:

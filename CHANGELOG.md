@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+### Added
+
+- experimental p300 ChIP-seq support
+
+### Changed
+
+- updated dependencies
+
+## [0.1.0] - 2023-11-23
+
 ### Changed
 
 - all output folders can now be configured
