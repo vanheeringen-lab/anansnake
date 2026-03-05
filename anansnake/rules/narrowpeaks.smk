@@ -93,7 +93,7 @@ rule samtools_index:
     output:
         "{filepath}.bam.bai",
     params:
-        config["samtools_index"],
+        config.get("samtools_index", ""),
     conda:
         "../envs/samtools.yaml"
     shell:
