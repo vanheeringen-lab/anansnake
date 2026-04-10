@@ -14,11 +14,11 @@ rule binding:
         expand("{binding_dir}/{{condition}}.h5", ** config),
     log:
         expand("{log_dir}/binding_{{condition}}.txt", **config),
-    benchmark:
-        expand("{benchmark_dir}/binding_{{condition}}.txt", **config)[0]
+    # benchmark:
+    #     expand("{benchmark_dir}/binding_{{condition}}.txt", **config)[0]
     params:
         atac_samples=lambda wildcards: CONDITIONS[wildcards.condition]["ATAC-seq samples"],
-        enhancer_data=lambda wildcards: "-P" if config.get("enhancer_data") == "p300" else "-A",
+        enhancer_data=lambda wildcards: "-P" if config.get("enhancer_data", "").lower() == "p300" else ("-H" if config.get("enhancer_data", "").lower() == "h3k27ac" else "-A"),
         jaccard=config["jaccard"],
     threads: 1  # multithreading not required when using a pfmscorefile
     resources:
@@ -34,6 +34,7 @@ rule binding:
 
         # additional log info
         printf "using columns: {params.atac_samples}\n\n" > {log}
+        printf "enhancer data input argument: {params.enhancer_data}\n\n" > {log}
 
         ananse binding \
         {params.enhancer_data} {input.atac} \
@@ -74,8 +75,8 @@ rule network:
         expand("{network_dir}/{{condition}}.tsv",**config),
     log:
         expand("{log_dir}/network_{{condition}}.txt",**config),
-    benchmark:
-        expand("{benchmark_dir}/network_{{condition}}.txt",**config)[0]
+    # benchmark:
+    #     expand("{benchmark_dir}/network_{{condition}}.txt",**config)[0]
     params:
         rna_samples=lambda wildcards: CONDITIONS[wildcards.condition]["RNA-seq samples"],
     threads: 1  # multithreading explodes memory
@@ -126,8 +127,8 @@ rule influence:
         diff_inf = expand("{influence_dir}/{{contrast}}_diffnetwork.tsv",** config),
     log:
         expand("{log_dir}/influence_{{contrast}}.txt",** config)[0]
-    benchmark:
-        expand("{benchmark_dir}/influence_{{contrast}}.txt",**config)[0]
+    # benchmark:
+    #     expand("{benchmark_dir}/influence_{{contrast}}.txt",**config)[0]
     params:
         edges=config["edges"],
         padj=config["padj"],

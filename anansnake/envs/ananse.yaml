@@ -2,9 +2,12 @@ name: ananse
 channels:
   - conda-forge
   - bioconda
+channel_priority: strict
 dependencies:
-  - python =3.10
-  - ananse =0.5.1
+  - conda-forge::python =3.10
+  - bioconda::ananse =0.5.1
+  - conda-forge::icu =73  # ImportError: /lib/x86_64-linux-gnu/libstdc++.so.6: version `CXXABI_1.3.15' not found (sql and pyarrow import order related)
+  - conda-forge::conda-ecosystem-user-package-isolation=1.0
 
   - pip
   - pip:

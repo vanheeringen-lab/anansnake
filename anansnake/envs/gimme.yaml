@@ -3,13 +3,12 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
-  - python =3.10
-  - gimmemotifs-minimal =0.18.0
+  - python =3.11
+  #- gimmemotifs-minimal =0.18.3
   - gffread
   - orthofinder
-  - xgboost  # optional maelstrom dependency
 
-  # TODO: check if this is still needed
   - pip
   - pip:
-      - git+https://github.com/vanheeringen-lab/gimmemotifs@report
+      - git+https://github.com/vanheeringen-lab/gimmemotifs@scanner_fix
+  - xgboost >= 1.0.2  # cannot be installed using pip
