@@ -20,7 +20,7 @@ rule binding:
         atac_samples=lambda wildcards: CONDITIONS[wildcards.condition]["ATAC-seq samples"],
         enhancer_data=lambda wildcards: "-P" if config.get("enhancer_data", "").lower() == "p300" else ("-H" if config.get("enhancer_data", "").lower() == "h3k27ac" else "-A"),
         jaccard=config["jaccard"],
-        tfs=config.get("tfs"),
+        tfs=f"--tfs {config['tfs']} if "tfs" in config else "",
     threads: 1  # multithreading not required when using a pfmscorefile
     resources:
         mem_mb=40_000,  # 30-50 GB
@@ -44,7 +44,7 @@ rule binding:
         -p {input.pfm} \
         --pfmscorefile {input.pfmscorefile} \
         --jaccard-cutoff {params.jaccard} \
-        --tfs {params.tfs} \
+        {params.tfs} \
         -n {threads} \
         -o $outdir \
         >> {log} 2>&1
@@ -81,7 +81,7 @@ rule network:
     #     expand("{benchmark_dir}/network_{{condition}}.txt",**config)[0]
     params:
         rna_samples=lambda wildcards: CONDITIONS[wildcards.condition]["RNA-seq samples"],
-        tfs=config.get("tfs"),
+        tfs=f"--tfs {config['tfs']} if "tfs" in config else "",
     threads: 1  # multithreading explodes memory
     resources:
         network=1,
@@ -101,7 +101,7 @@ rule network:
         {input.binding} \
         -e {input.genes} \
         -c {params.rna_samples} \
-        --tfs {params.tfs} \
+        {params.tfs} \
         -g {input.genome} \
         -o {output} \
         --full-output \
