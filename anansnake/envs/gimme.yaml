@@ -7,6 +7,7 @@ dependencies:
   #- gimmemotifs-minimal =0.18.3
   - gffread
   - orthofinder
+  - conda-forge::conda-ecosystem-user-package-isolation=1.0
 
   - pip
   - pip:
