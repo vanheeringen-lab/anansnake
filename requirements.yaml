@@ -4,3 +4,10 @@ channels:
   - bioconda
 dependencies:
   - seq2science =1.2.5
+  - bioconda::genomepy=0.16.3
+  - conda-forge::toml=0.10.2
+
+  - pip
+  - pip:
+      - git+https://github.com/vanheeringen-lab/genomepy.git@develop
+      - git+https://github.com/vanheeringen-lab/seq2science.git@gp
