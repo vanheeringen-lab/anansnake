@@ -3,13 +3,9 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
-  - python =3.11
-  #- gimmemotifs-minimal =0.18.3
-  - gffread
-  - orthofinder
+  - conda-forge::python=3.12
+  - bioconda::gimmemotifs-minimal=0.18.3
+  - bioconda::gffread
+  - bioconda::orthofinder
+  - conda-forge::xgboost  #=3.2.0
   - conda-forge::conda-ecosystem-user-package-isolation=1.0
-
-  - pip
-  - pip:
-      - git+https://github.com/vanheeringen-lab/gimmemotifs@scanner_fix
-  - xgboost >= 1.0.2  # cannot be installed using pip
