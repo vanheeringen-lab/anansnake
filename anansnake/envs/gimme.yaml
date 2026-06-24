@@ -3,8 +3,10 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
-  - python =3.10
-  - gimmemotifs-minimal =0.18.0
-  - gffread
-  - orthofinder
-  - xgboost  # optional maelstrom dependency
+  - conda-forge::python=3.12
+  - bioconda::gimmemotifs-minimal=0.18.4
+  - bioconda::gffread=0.12.7
+  - bioconda::orthofinder=3.1.5
+  - conda-forge::xgboost=3.2.0
+  - conda-forge::cpulimit=0.2
+  - conda-forge::conda-ecosystem-user-package-isolation=1.0

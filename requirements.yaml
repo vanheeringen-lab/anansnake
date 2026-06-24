@@ -3,4 +3,4 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
-  - seq2science =1.2.5
+  - seq2science =1.2.6

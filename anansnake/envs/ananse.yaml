@@ -3,5 +3,32 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
-  - python =3.10
-  - ananse =0.5.0
+#  - conda-forge::python =3.10
+#  - bioconda::ananse =0.5.1
+#  - conda-forge::icu =73  # ImportError: /lib/x86_64-linux-gnu/libstdc++.so.6: version `CXXABI_1.3.15' not found (sql and pyarrow import order related)
+
+  - python >=3.7
+  - adjusttext
+  - dask
+  - genomepy >=0.16.4
+  - gimmemotifs-minimal >=0.18.4
+  - loguru
+  - matplotlib-base >=3.3
+  - networkx
+  - numpy >=1.6
+  - openpyxl
+  - pandas <3                     # not sure if compatible with the new version
+  - pybedtools
+  - pydot >=1.4.1                 # required for networkx plots
+  - pygraphviz >=1.7              # required for networkx plots
+  - pyranges
+  - pytables <=3.9                # required for pandas.read_hfd()
+  - scikit-learn >=0.24.1         # models were made using version 0.24.1
+  - scipy >=1.9                   # fix in mannwhitneyu
+  - seaborn-base
+  - tqdm
+  - conda-forge::conda-ecosystem-user-package-isolation=1.0
+
+  - pip
+  - pip:
+      - git+https://github.com/vanheeringen-lab/ANANSE.git@gp
