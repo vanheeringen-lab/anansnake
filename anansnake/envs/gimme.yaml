@@ -4,8 +4,9 @@ channels:
   - bioconda
 dependencies:
   - conda-forge::python=3.12
-  - bioconda::gimmemotifs-minimal=0.18.3
-  - bioconda::gffread
-  - bioconda::orthofinder
-  - conda-forge::xgboost  #=3.2.0
+  - bioconda::gimmemotifs-minimal=0.18.4
+  - bioconda::gffread=0.12.7
+  - bioconda::orthofinder=3.1.5
+  - conda-forge::xgboost=3.2.0
+  - conda-forge::cpulimit=0.2
   - conda-forge::conda-ecosystem-user-package-isolation=1.0

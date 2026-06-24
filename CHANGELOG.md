@@ -10,9 +10,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 - experimental p300 ChIP-seq support
 
-### Changed
+### Fixed
 
-- updated dependencies
+- dependencies
 
 ## [0.1.0] - 2023-11-23
 
